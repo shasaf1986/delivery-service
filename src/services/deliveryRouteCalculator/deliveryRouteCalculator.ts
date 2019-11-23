@@ -27,4 +27,20 @@ export default class DeliveryRouteCalculator {
       this.adjacencyList.set(to, new Map());
     }
   }
+  getDeliveryCost(deliveryRoute: string[]) {
+    if (deliveryRoute.length < 2) {
+      throw new Error('deliveryRoute should >= 2');
+    }
+    let cost = 0;
+    for (let i = 0; i < deliveryRoute.length - 1; i++) {
+      const fromTown = deliveryRoute[i];
+      const toTown = deliveryRoute[i + 1];
+      const adjacency = this.adjacencyList.get(fromTown);
+      if (!adjacency || !adjacency.has(toTown)) {
+        return null;
+      }
+      cost += adjacency.get(toTown)!;
+    }
+    return cost;
+  }
 }

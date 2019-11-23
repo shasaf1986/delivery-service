@@ -9,4 +9,31 @@ describe('DeliveryRouteCalculator', () => {
       DeliveryRouteCalculator.fromRawRoutes(['AB1', 'AB2']);
     }).toThrow();
   });
+  describe('getDeliveryCost', () => {
+    test('should return correct cost for routes', () => {
+      const routesAndCosts = [
+        {
+          route: ['A', 'B', 'E'],
+          cost: 4,
+        },
+        {
+          route: ['A', 'D'],
+          cost: 10,
+        },
+        {
+          route: ['E', 'A', 'C', 'F'],
+          cost: 8,
+        },
+        {
+          route: ['A', 'D', 'F'],
+          cost: null,
+        },
+      ];
+      routesAndCosts.forEach(({ route, cost }) => {
+        const actualCost = deliveryRouteCalculator.getDeliveryCost(route);
+        console.log(actualCost);
+        expect(actualCost).toBe(cost);
+      });
+    });
+  });
 });
