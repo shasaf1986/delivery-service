@@ -88,6 +88,7 @@ export default class Graph {
     if (paths.length === 0) {
       return null;
     }
-    return paths.reduce((prevPath, currentPath) => (currentPath.totalWeight < prevPath.totalWeight ? currentPath : prevPath));
+    return paths.reduce((prevPath, currentPath) => (currentPath.totalWeight < prevPath.totalWeight
+      ? currentPath : prevPath));
   }
 }
