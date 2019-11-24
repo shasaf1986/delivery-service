@@ -1,3 +1,3 @@
-import Graph from "./graph";
+import Graph from './graph';
 
 export default Graph;

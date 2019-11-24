@@ -1,36 +1,36 @@
-import Graph from "./graph";
+import Graph from './graph';
 
 describe('Graph', () => {
   const edges = [
     {
-      from: 'A', to: 'B', weight: 1
+      from: 'A', to: 'B', weight: 1,
     },
     {
-      from: 'A', to: 'C', weight: 4
+      from: 'A', to: 'C', weight: 4,
     },
     {
-      from: 'A', to: 'D', weight: 10
+      from: 'A', to: 'D', weight: 10,
     },
     {
-      from: 'B', to: 'E', weight: 3
+      from: 'B', to: 'E', weight: 3,
     },
     {
-      from: 'C', to: 'D', weight: 4
+      from: 'C', to: 'D', weight: 4,
     },
     {
-      from: 'C', to: 'F', weight: 2
+      from: 'C', to: 'F', weight: 2,
     },
     {
-      from: 'D', to: 'E', weight: 1
+      from: 'D', to: 'E', weight: 1,
     },
     {
-      from: 'E', to: 'B', weight: 3
+      from: 'E', to: 'B', weight: 3,
     },
     {
-      from: 'E', to: 'A', weight: 2
+      from: 'E', to: 'A', weight: 2,
     },
     {
-      from: 'F', to: 'D', weight: 1
+      from: 'F', to: 'D', weight: 1,
     },
   ];
   const graph = new Graph();
@@ -43,16 +43,18 @@ describe('Graph', () => {
         from: 'E',
         to: 'D',
         maxLength: 5,
-        result: 4
+        result: 4,
       }, {
         from: 'E',
         to: 'E',
         maxLength: Infinity,
-        result: 5
+        result: 5,
       }];
-      params.forEach(({ from, to, maxLength, result }) => {
+      params.forEach(({
+        from, to, maxLength, result,
+      }) => {
         const paths = graph.getPossiblePaths(from, to, {
-          maxLength
+          maxLength,
         });
         expect(paths.length).toBe(result);
       });
@@ -91,13 +93,13 @@ describe('Graph', () => {
         {
           from: 'E',
           to: 'D',
-          totalWeight: 9
+          totalWeight: 9,
         },
         {
 
           from: 'E',
           to: 'E',
-          totalWeight: 6
+          totalWeight: 6,
         },
       ];
       params.forEach(({ from, to, totalWeight }) => {
