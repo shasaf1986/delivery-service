@@ -15,7 +15,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --watchAll=false",
+    "test:watch": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "yarn lint:nofix --fix",
     "lint:nofix": "eslint --ext .js,.jsx,.ts,.tsx ./src"
