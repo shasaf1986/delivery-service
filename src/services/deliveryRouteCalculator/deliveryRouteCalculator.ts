@@ -45,16 +45,21 @@ export default class DeliveryRouteCalculator {
     return cost;
 
   }
-  getNumberOfDeliveryRoutes(from: string, to: string) {
-    return this._getPossiblePaths(from, to);
-  }
-  _getPossiblePaths(
+  getPossiblePaths(
     from: string, to: string,
-    path: string[] = [],
-    paths: string[][] = [],
+    {
+      path = [],
+      paths = [],
+      maxLength = Infinity,
+    }: {
+      path?: string[],
+      paths?: string[][],
+      maxLength?: number
+    } = {}
   ) {
     const node = this.graph.get(from);
-    if (!node) {
+    const isReachedMaxLength = (path.length + 2) > maxLength;
+    if (!node || isReachedMaxLength) {
       return paths;
     }
     path.push(from);
@@ -71,7 +76,9 @@ export default class DeliveryRouteCalculator {
           return vertex === from && nextVertex === neighbor;
         });
         if (!hasCircle) {
-          this._getPossiblePaths(neighbor, to, path, paths);
+          this.getPossiblePaths(neighbor, to, {
+            path, paths, maxLength
+          });
         }
       }
     });

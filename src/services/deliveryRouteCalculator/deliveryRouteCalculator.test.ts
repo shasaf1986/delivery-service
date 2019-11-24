@@ -4,21 +4,35 @@ describe('DeliveryRouteCalculator', () => {
   const deliveryRouteCalculator = DeliveryRouteCalculator.fromRawRoutes(
     'AB1,AC4,AD10,BE3,CD4,CF2,DE1,EB3,EA2,FD1'.split(',')
   );
-  // const deliveryRouteCalculator = DeliveryRouteCalculator.fromRawRoutes(
-    // 'EB1,BE1,ED1'.split(',')
-  // );
-  test.skip('should thrown an error when there are duplicate routes', () => {
+  test('should thrown an error when there are duplicate routes', () => {
     expect(() => {
       DeliveryRouteCalculator.fromRawRoutes(['AB1', 'AB2']);
     }).toThrow();
   });
-  test('dummy', () => {
-    const test = deliveryRouteCalculator.getNumberOfDeliveryRoutes('E', 'D');
-    console.log(test);
+  describe('getPossiblePaths', () => {
+    test('should return correct number of paths', () => {
+      const params = [{
+        from: 'E',
+        to: 'D',
+        maxLength: 5,
+        result: 4
+      }, {
+        from: 'E',
+        to: 'E',
+        maxLength: Infinity,
+        result: 5
+      }];
+      params.forEach(({ from, to, maxLength, result }) => {
+        const paths = deliveryRouteCalculator.getPossiblePaths(from, to, {
+          maxLength
+        });
+        expect(paths.length).toBe(result);
+      });
+    });
   });
-  describe.skip('getDeliveryCost', () => {
+  describe('getDeliveryCost', () => {
     test('should return correct cost for routes', () => {
-      const routesAndCosts = [
+      const params = [
         {
           route: ['A', 'B', 'E'],
           cost: 4,
@@ -36,7 +50,7 @@ describe('DeliveryRouteCalculator', () => {
           cost: null,
         },
       ];
-      routesAndCosts.forEach(({ route, cost }) => {
+      params.forEach(({ route, cost }) => {
         const actualCost = deliveryRouteCalculator.getDeliveryCost(route);
         console.log(actualCost);
         expect(actualCost).toBe(cost);
