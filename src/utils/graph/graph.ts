@@ -80,4 +80,13 @@ export default class Graph {
     };
     return getPossiblePathsRecursive(from, to, 0);
   }
+  getShortestPath(from: string, to: string) {
+    const paths = this.getPossiblePaths(from, to);
+    if (paths.length === 0) {
+      return null;
+    }
+    return paths.reduce((prevPath, currentPath) => {
+      return currentPath.totalWeight < prevPath.totalWeight ? currentPath : prevPath;
+    });
+  }
 }

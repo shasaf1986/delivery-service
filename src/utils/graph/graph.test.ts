@@ -85,4 +85,25 @@ describe('Graph', () => {
       });
     });
   });
+  describe('getShortestPath', () => {
+    test('should return correct cost for routes', () => {
+      const params = [
+        {
+          from: 'E',
+          to: 'D',
+          totalWeight: 9
+        },
+        {
+
+          from: 'E',
+          to: 'E',
+          totalWeight: 6
+        },
+      ];
+      params.forEach(({ from, to, totalWeight }) => {
+        const path = graph.getShortestPath(from, to)!;
+        expect(path.totalWeight).toBe(totalWeight);
+      });
+    });
+  });
 });
