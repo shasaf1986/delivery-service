@@ -8,23 +8,23 @@ export default class DeliveryRouteCalculator {
     });
     return deliveryRouteCalculator;
   }
-  adjacencyList: Map<string, Map<string, number>> = new Map();
+  graph: Map<string, Map<string, number>> = new Map();
   addEdge(from: string, to: string, weight: number) {
     console.info(`add edge from ${from} to ${to} weight ${weight}`);
     if (weight < 0) {
       throw new Error('weight should be >= 0');
     }
-    let fromAdjacency = this.adjacencyList.get(from);
+    let fromAdjacency = this.graph.get(from);
     if (!fromAdjacency) {
       fromAdjacency = new Map();
-      this.adjacencyList.set(from, fromAdjacency);
+      this.graph.set(from, fromAdjacency);
     }
     if (fromAdjacency.has(to)) {
       throw new Error(`edge from ${from} to ${to} already exist`);
     }
     fromAdjacency.set(to, weight);
-    if (!this.adjacencyList.has(to)) {
-      this.adjacencyList.set(to, new Map());
+    if (!this.graph.has(to)) {
+      this.graph.set(to, new Map());
     }
   }
   getDeliveryCost(deliveryRoute: string[]) {
@@ -35,12 +35,47 @@ export default class DeliveryRouteCalculator {
     for (let i = 0; i < deliveryRoute.length - 1; i++) {
       const fromTown = deliveryRoute[i];
       const toTown = deliveryRoute[i + 1];
-      const adjacency = this.adjacencyList.get(fromTown);
+      const adjacency = this.graph.get(fromTown);
       if (!adjacency || !adjacency.has(toTown)) {
         return null;
       }
+
       cost += adjacency.get(toTown)!;
     }
     return cost;
+
+  }
+  getNumberOfDeliveryRoutes(from: string, to: string) {
+    return this._getPossiblePaths(from, to);
+  }
+  _getPossiblePaths(
+    from: string, to: string,
+    path: string[] = [],
+    paths: string[][] = [],
+  ) {
+    const node = this.graph.get(from);
+    if (!node) {
+      return paths;
+    }
+    path.push(from);
+    node.forEach((weight, neighbor) => {
+      if (neighbor === to) {
+        const validPath = [
+          ...path,
+          to,
+        ];
+        paths.push(validPath);
+      } else {
+        const hasCircle = path.some((vertex, index) => {
+          const nextVertex = path[index + 1];
+          return vertex === from && nextVertex === neighbor;
+        });
+        if (!hasCircle) {
+          this._getNumberOfDeliveryRoutes(neighbor, to, path, paths);
+        }
+      }
+    });
+    path.pop();
+    return paths;
   }
 }

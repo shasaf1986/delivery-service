@@ -4,12 +4,19 @@ describe('DeliveryRouteCalculator', () => {
   const deliveryRouteCalculator = DeliveryRouteCalculator.fromRawRoutes(
     'AB1,AC4,AD10,BE3,CD4,CF2,DE1,EB3,EA2,FD1'.split(',')
   );
-  test('should thrown an error when there are duplicate routes', () => {
+  // const deliveryRouteCalculator = DeliveryRouteCalculator.fromRawRoutes(
+    // 'EB1,BE1,ED1'.split(',')
+  // );
+  test.skip('should thrown an error when there are duplicate routes', () => {
     expect(() => {
       DeliveryRouteCalculator.fromRawRoutes(['AB1', 'AB2']);
     }).toThrow();
   });
-  describe('getDeliveryCost', () => {
+  test('dummy', () => {
+    const test = deliveryRouteCalculator.getNumberOfDeliveryRoutes('E', 'D');
+    console.log(test);
+  });
+  describe.skip('getDeliveryCost', () => {
     test('should return correct cost for routes', () => {
       const routesAndCosts = [
         {
