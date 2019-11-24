@@ -71,7 +71,7 @@ export default class DeliveryRouteCalculator {
           return vertex === from && nextVertex === neighbor;
         });
         if (!hasCircle) {
-          this._getNumberOfDeliveryRoutes(neighbor, to, path, paths);
+          this._getPossiblePaths(neighbor, to, path, paths);
         }
       }
     });
