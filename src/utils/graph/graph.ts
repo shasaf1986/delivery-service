@@ -1,3 +1,5 @@
+import PathData from "./types/pathData";
+
 export default class Graph {
   graph: Map<string, Map<string, number>> = new Map();
   addEdge(from: string, to: string, weight: number) {
@@ -38,41 +40,44 @@ export default class Graph {
   getPossiblePaths(
     from: string, to: string,
     {
-      path = [],
-      paths = [],
       maxLength = Infinity,
     }: {
-      path?: string[],
-      paths?: string[][],
-      maxLength?: number
+      maxLength?: number,
     } = {}
   ) {
-    const node = this.graph.get(from);
-    const isReachedMaxLength = (path.length + 2) > maxLength;
-    if (!node || isReachedMaxLength) {
-      return paths;
-    }
-    path.push(from);
-    node.forEach((weight, neighbor) => {
-      if (neighbor === to) {
-        const validPath = [
-          ...path,
-          to,
-        ];
-        paths.push(validPath);
-      } else {
-        const hasCircle = path.some((vertex, index) => {
-          const nextVertex = path[index + 1];
-          return vertex === from && nextVertex === neighbor;
-        });
-        if (!hasCircle) {
-          this.getPossiblePaths(neighbor, to, {
-            path, paths, maxLength
-          });
-        }
+    const path: string[] = [];
+    const paths: PathData[] = [];
+    let totalWeight = 0;
+
+    const getPossiblePathsRecursive = (from: string, to: string, weight: number) => {
+      const node = this.graph.get(from);
+      const isReachedMaxLength = (path.length + 2) > maxLength;
+      if (!node || isReachedMaxLength) {
+        return paths;
       }
-    });
-    path.pop();
-    return paths;
+      path.push(from);
+      totalWeight = totalWeight + weight;
+      node.forEach((weight, neighbor) => {
+        if (neighbor === to) {
+          const pathData: PathData = {
+            path: [...path, to],
+            totalWeight: totalWeight + weight,
+          };
+          paths.push(pathData);
+        } else {
+          const hasCircle = path.some((vertex, index) => {
+            const nextVertex = path[index + 1];
+            return vertex === from && nextVertex === neighbor;
+          });
+          if (!hasCircle) {
+            getPossiblePathsRecursive(neighbor, to, weight);
+          }
+        }
+      });
+      totalWeight = totalWeight - weight;
+      path.pop();
+      return paths;
+    };
+    return getPossiblePathsRecursive(from, to, 0);
   }
 }
