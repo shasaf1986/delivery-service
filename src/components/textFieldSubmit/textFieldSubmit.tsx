@@ -1,22 +1,10 @@
 import React, { useState } from 'react';
 import {
-  Typography, CssBaseline, Container, TextField, Paper, Button, createMuiTheme, Box,
+  Typography, CssBaseline, Container, TextField, Paper, Button, createMuiTheme, Box, NativeSelect, FormControl, Select,
 } from '@material-ui/core';
 import { ThemeProvider, createStyles, makeStyles } from '@material-ui/styles';
+import InputGroup from '../inputGroup';
 
-const useStyles = makeStyles(
-  createStyles({
-    input: {
-      '& input': {
-        paddingTop: '12px',
-        paddingBottom: '12px',
-      },
-    },
-    button: {
-      marginLeft: '10px',
-    },
-  }),
-);
 
 interface Props {
   submitText?: string;
@@ -29,31 +17,34 @@ const TextFieldSubmit: React.FC<Props> = ({
   onSubmit,
 }) => {
   const [value, setValue] = useState(initialValue);
-  const classes = useStyles();
 
   return (
-    <Box display="flex" alignItems="center" flexGrow="flexGrow">
-      <TextField
+    <InputGroup>
+      <Select
+        native
         fullWidth
-        className={classes.input}
-        onChange={(event) => { setValue(event.currentTarget.value); }}
-        value={value}
-        margin="none"
         variant="outlined"
-      />
-      <Box className={classes.button}>
-        <Button
-          onClick={() => {
-            onSubmit(value);
-          }}
-          variant="contained"
-          size="large"
-          color="primary"
-        >
-          {submitText}
-        </Button>
-      </Box>
-    </Box>
+        inputProps={{
+          name: 'age',
+          id: 'outlined-age-native-simple',
+        }}
+      >
+        <option value="" />
+        <option value={10}>Ten</option>
+        <option value={20}>Twenty</option>
+        <option value={30}>Thirty</option>
+      </Select>
+      <Button
+        onClick={() => {
+          onSubmit(value);
+        }}
+        variant="contained"
+        size="large"
+        color="primary"
+      >
+        {submitText}
+      </Button>
+    </InputGroup>
   );
 };
 
