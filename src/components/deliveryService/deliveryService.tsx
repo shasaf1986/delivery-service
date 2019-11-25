@@ -3,6 +3,7 @@ import { Typography, Paper } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/styles';
 import SetGraph from '../setGraph';
 import DeliveryRouteCalculator from '../../services/deliveryRouteCalculator/deliveryRouteCalculator';
+import ExactRouteCalculator from '../exactRouteCalculator';
 
 const useStyles = makeStyles(
   createStyles({
@@ -13,8 +14,9 @@ const useStyles = makeStyles(
 );
 
 const DeliveryService: React.FC = () => {
-  const [mode, setMode] = useState<'initial' | 'case1' | 'case2' | 'case3'>('initial');
-  const deliveryRouteCalculator = useRef<DeliveryRouteCalculator | undefined>();
+  const [mode, setMode] = useState<'initial' | '1' | '1' | '3'>('initial');
+  const calculatorRef = useRef<DeliveryRouteCalculator | undefined>();
+  const calculator = calculatorRef.current;
 
   const classes = useStyles();
   return (
@@ -22,13 +24,14 @@ const DeliveryService: React.FC = () => {
       <Typography variant="h3" gutterBottom>
         Delivery Service
       </Typography>
-      {mode === 'initial' && <Paper className={classes.paper}>
-        <SetGraph onSelected={(routes) => {
-          deliveryRouteCalculator.current = new DeliveryRouteCalculator(routes);
-          setMode('case1');
+      <Paper className={classes.paper}>
+        {mode === 'initial' && <SetGraph onSelected={(routes) => {
+          calculatorRef.current = new DeliveryRouteCalculator(routes);
+          setMode('1');
         }}
-        />
-      </Paper>}
+        />}
+        {mode === '1' && <ExactRouteCalculator calculator={calculator!} />}
+      </Paper>
     </Typography>
   );
 };
