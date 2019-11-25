@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Typography, CssBaseline, Container, TextField, Paper, Button, createMuiTheme, Box } from '@material-ui/core';
+import {
+  Typography, CssBaseline, Container, TextField, Paper, Button, createMuiTheme, Box,
+} from '@material-ui/core';
 import { ThemeProvider, createStyles, makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles(
@@ -8,11 +10,11 @@ const useStyles = makeStyles(
       '& input': {
         paddingTop: '12px',
         paddingBottom: '12px',
-      }
+      },
     },
     button: {
-      marginLeft: '10px'
-    }
+      marginLeft: '10px',
+    },
   }),
 );
 
@@ -40,9 +42,14 @@ const TextFieldSubmit: React.FC<Props> = ({
         variant="outlined"
       />
       <Box className={classes.button}>
-        <Button onClick={() => {
-          onSubmit(value);
-        }} variant="contained" size="large" color="primary">
+        <Button
+          onClick={() => {
+            onSubmit(value);
+          }}
+          variant="contained"
+          size="large"
+          color="primary"
+        >
           {submitText}
         </Button>
       </Box>

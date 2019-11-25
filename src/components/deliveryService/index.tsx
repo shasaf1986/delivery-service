@@ -1,3 +1,3 @@
-import DeliveryService from "./deliveryService";
+import DeliveryService from './deliveryService';
 
 export default DeliveryService;
