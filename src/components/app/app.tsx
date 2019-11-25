@@ -1,12 +1,58 @@
 import React from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import { Typography, CssBaseline, Container, TextField, Paper, Button, createMuiTheme, Box } from '@material-ui/core';
+import { ThemeProvider, createStyles, makeStyles } from '@material-ui/styles';
+import TextFieldSubmit from '../textFieldSubmit';
 
-const App: React.FC = () => (
-  <>
-    <CssBaseline />
-    <div className="App">
-    </div>
-  </>
+const theme = createMuiTheme({
+  palette: {
+    background: {
+      default: "#fff"
+    }
+  }
+});
+
+const useStyles = makeStyles(
+  createStyles({
+    input: {
+      '& input': {
+        paddingTop: '12px',
+        paddingBottom: '12px',
+      }
+      // '> di'
+      // display: 'block',
+      // width: '100%',
+    },
+    paper: {
+
+      padding: '24px 16px'
+    },
+    button: {
+      marginLeft: '10px'
+    }
+  }),
 );
+
+
+const App: React.FC = () => {
+  const classes = useStyles();
+  return (
+    <ThemeProvider theme={theme} >
+      <CssBaseline />
+      <Container>
+        <Typography component="div" >
+          <Typography variant="h3" gutterBottom>
+            Delivery Service
+      </Typography>
+          <Paper className={classes.paper} >
+            <Typography gutterBottom variant="h5" component="h3">
+              Enter graph
+      </Typography>
+            <TextFieldSubmit />
+          </Paper>
+        </Typography>
+      </Container>
+    </ThemeProvider>
+  );
+};
 
 export default App;
