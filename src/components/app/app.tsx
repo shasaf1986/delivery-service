@@ -47,7 +47,12 @@ const App: React.FC = () => {
             <Typography gutterBottom variant="h5" component="h3">
               Enter graph
       </Typography>
-            <TextFieldSubmit />
+            <TextFieldSubmit
+              onSubmit={(value) => {
+                console.log(value);
+              }}
+              initialValue="AB1,AC4,AD10,BE3,CD4,CF2,DE1,EB3,EA2,FD1"
+            />
           </Paper>
         </Typography>
       </Container>
