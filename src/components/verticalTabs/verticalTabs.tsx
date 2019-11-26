@@ -5,12 +5,8 @@ import {
 
 const useStyles = makeStyles(
   createStyles({
-    bar: {
+    tabs: {
       borderRight: '1px solid rgba(0, 0, 0, 0.12)',
-      marginRight: '15px',
-      marginTop: '-16px',
-      marginBottom: '-16px',
-      marginLeft: '-16px',
     },
   }),
 );
@@ -19,12 +15,13 @@ interface Props {
   tabs: string[];
   selectedTab: number;
   onChange: (value: number) => void;
+  className?: string;
 }
-const SideBar: React.FC<Props> = ({ tabs, selectedTab, onChange }) => {
+const VerticalTabs: React.FC<Props> = ({ tabs, selectedTab, onChange, className = '' }) => {
   const classes = useStyles();
   return (
     <Tabs
-      className={classes.bar}
+      className={`${classes.tabs} ${className}`}
       orientation="vertical"
       variant="scrollable"
       value={selectedTab}
@@ -39,4 +36,4 @@ const SideBar: React.FC<Props> = ({ tabs, selectedTab, onChange }) => {
   );
 };
 
-export default SideBar;
+export default VerticalTabs;

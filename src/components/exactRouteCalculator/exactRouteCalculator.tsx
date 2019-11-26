@@ -4,8 +4,8 @@ import {
 } from '@material-ui/core';
 import DeliveryRouteCalculator from '../../services/deliveryRouteCalculator/deliveryRouteCalculator';
 import Stepper from '../stepper';
-import SideBar from './sideBar';
 import Controls from './controls';
+import VerticalTabs from '../verticalTabs';
 
 interface Props {
   calculator: DeliveryRouteCalculator;
@@ -13,6 +13,13 @@ interface Props {
 
 const tabs = ['Case 1', 'Case 2', 'Case 3'];
 
+const useStyles = makeStyles(
+  createStyles({
+    tabs: {
+      margin: '-16px 15px -16px -16px'
+    },
+  }),
+);
 const useCities = (calculator: DeliveryRouteCalculator) => {
   return useMemo(() => {
     const citiesFromGraph: string[] = [];
@@ -84,14 +91,13 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
   const reset = useRest(setCity, setLables);
   const addCity = useAddCity(setCity, setLables, labels, city);
   const changeTab = useChangeTab(reset, setSelectedTab);
+  const classes = useStyles();
 
   return (
     <Box marginRight="10px" display="flex">
-      <SideBar
-        tabs={tabs}
+      <VerticalTabs className={classes.tabs} tabs={tabs}
         selectedTab={selectedTab}
-        onChange={changeTab}
-      />
+        onChange={changeTab} />
       <Box flex="1">
         <Typography gutterBottom variant="h5" component="h3">
           {tabs[selectedTab]}
