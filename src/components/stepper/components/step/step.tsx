@@ -1,5 +1,8 @@
 import React from 'react';
-import { Step as OriginStep, StepLabel, makeStyles, createStyles } from '@material-ui/core';
+import {
+  Step as OriginStep, StepLabel, makeStyles, createStyles,
+} from '@material-ui/core';
+
 interface Props {
   disabled: boolean;
   label: string;
@@ -9,8 +12,8 @@ const useStyles = makeStyles<undefined, boolean>(
   createStyles({
     step: {
       '& .MuiStepLabel-iconContainer': {
-        display: 'none'
-      }
+        display: 'none',
+      },
     },
     label: (disabled: boolean) => ({
       width: '24px',
@@ -20,15 +23,15 @@ const useStyles = makeStyles<undefined, boolean>(
       color: '#fff',
       textAlign: 'center',
       lineHeight: '24px',
-    })
+    }),
   }),
 );
 
 const Step: React.FC<Props> = ({ disabled, label }) => {
   const classes = useStyles(disabled);
   return (
-    <OriginStep className={classes.step}  >
-      <StepLabel ><div className={classes.label}>{label}</div></StepLabel>
+    <OriginStep className={classes.step}>
+      <StepLabel><div className={classes.label}>{label}</div></StepLabel>
     </OriginStep>
   );
 };

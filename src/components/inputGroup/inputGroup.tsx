@@ -16,12 +16,12 @@ const useStyles = makeStyles(
       },
       '& >*:not(:first-child)': {
         marginLeft: '10px',
-      }
+      },
     },
   }),
 );
 
-interface Props { };
+interface Props { }
 
 const InputGroup: React.FC<Props> = ({ children }) => {
   const classes = useStyles();

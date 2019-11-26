@@ -1,3 +1,3 @@
-import ExactRouteCalculator from "./exactRouteCalculator";
+import ExactRouteCalculator from './exactRouteCalculator';
 
 export default ExactRouteCalculator;

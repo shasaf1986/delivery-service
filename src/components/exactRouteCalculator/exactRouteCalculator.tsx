@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Typography, Button, Select } from '@material-ui/core';
-import TextFieldSubmit from '../textFieldSubmit';
 import DeliveryRouteCalculator from '../../services/deliveryRouteCalculator/deliveryRouteCalculator';
 import Stepper from '../stepper';
 import InputGroup from '../inputGroup';
@@ -12,8 +11,20 @@ interface Props {
 const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
   const [labels, setLables] = useState<string[]>(() => []);
   const [city, setCity] = useState('-1');
+
+  const addCity = () => {
+    setCity('-1');
+    setLables([
+      ...labels,
+      city,
+    ]);
+  };
+  const rest = () => {
+    setCity('-1');
+    setLables([]);
+  };
   const cities = [
-    'A', 'B', 'C', 'E', 'F'
+    'A', 'B', 'C', 'E', 'F',
   ];
   return (
     <>
@@ -33,17 +44,11 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
         >
           <option value="-1">City</option>
           {
-            cities.map((city) => <option key={city} value={city} >{city}</option>)
+            cities.map((city) => <option key={city} value={city}>{city}</option>)
           }
         </Select>
         <Button
-          onClick={() => {
-            setCity('-1');
-            setLables([
-              ...labels,
-              city
-            ]);
-          }}
+          onClick={addCity}
           variant="contained"
           color="primary"
           size="large"
@@ -51,9 +56,7 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
           Add city
         </Button>
         <Button
-          onClick={() => {
-            setLables([]);
-          }}
+          onClick={rest}
           variant="contained"
           size="large"
         >

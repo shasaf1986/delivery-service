@@ -25,11 +25,13 @@ const DeliveryService: React.FC = () => {
         Delivery Service
       </Typography>
       <Paper className={classes.paper}>
-        {mode === 'initial' && <SetGraph onSelected={(routes) => {
+        {mode === 'initial' && (
+        <SetGraph onSelected={(routes) => {
           calculatorRef.current = new DeliveryRouteCalculator(routes);
           setMode('1');
         }}
-        />}
+        />
+        )}
         {mode === '1' && <ExactRouteCalculator calculator={calculator!} />}
       </Paper>
     </Typography>
