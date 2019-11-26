@@ -7,6 +7,9 @@ import { createStyles, makeStyles } from '@material-ui/styles';
 const useStyles = makeStyles(
   createStyles({
     root: {
+      '& button': {
+        whiteSpace: 'nowrap',
+      },
       '& input, & select': {
         paddingTop: '12px',
         paddingBottom: '12px',
