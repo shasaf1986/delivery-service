@@ -3,7 +3,7 @@ import {
   Typography, Stepper as OriginStepper, StepLabel, Box, makeStyles, createStyles,
 } from '@material-ui/core';
 import DeliveryRouteCalculator from '../../services/deliveryRouteCalculator/deliveryRouteCalculator';
-import Step from './components/step';
+import Step from './step';
 
 interface Props {
   // calculator: DeliveryRouteCalculator;
