@@ -14,25 +14,25 @@ const useStyles = makeStyles(
 );
 
 const DeliveryService: React.FC = () => {
-  const [mode, setMode] = useState<'initial' | '1' | '1' | '3'>('initial');
+  const [isGraphReady, setIsGraphReady] = useState(false);
   const calculatorRef = useRef<DeliveryRouteCalculator | undefined>();
   const calculator = calculatorRef.current;
-
   const classes = useStyles();
+
   return (
     <Typography component="div">
       <Typography variant="h3" gutterBottom>
         Delivery Service
       </Typography>
       <Paper className={classes.paper}>
-        {mode === 'initial' && (
-        <SetGraph onSelected={(routes) => {
-          calculatorRef.current = new DeliveryRouteCalculator(routes);
-          setMode('1');
-        }}
-        />
+        {!isGraphReady && (
+          <SetGraph onSelected={(rawGraph) => {
+            calculatorRef.current = new DeliveryRouteCalculator(rawGraph);
+            setIsGraphReady(true);
+          }}
+          />
         )}
-        {mode === '1' && <RouteCalculator calculator={calculator!} />}
+        {isGraphReady && <RouteCalculator calculator={calculator!} />}
       </Paper>
     </Typography>
   );
