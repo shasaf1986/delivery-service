@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import {
-  Typography, Button, Select, Tabs, Tab, Box, createStyles, makeStyles,
+  Typography, Box, createStyles, makeStyles,
 } from '@material-ui/core';
 import DeliveryRouteCalculator from '../../services/deliveryRouteCalculator/deliveryRouteCalculator';
 import Stepper from '../stepper';
@@ -16,21 +16,23 @@ const tabs = ['Case 1', 'Case 2', 'Case 3'];
 const useStyles = makeStyles(
   createStyles({
     tabs: {
-      margin: '-16px 15px -16px -16px'
+      margin: '-16px 15px -16px -16px',
     },
   }),
 );
-const useCities = (calculator: DeliveryRouteCalculator) => {
-  return useMemo(() => {
-    const citiesFromGraph: string[] = [];
-    calculator.graph.graph.forEach((_, city) => {
-      citiesFromGraph.push(city);
-    });
-    return citiesFromGraph;
-  }, [calculator]);
-}
+const useCities = (calculator: DeliveryRouteCalculator) => useMemo(() => {
+  const citiesFromGraph: string[] = [];
+  calculator.graph.graph.forEach((_, city) => {
+    citiesFromGraph.push(city);
+  });
+  return citiesFromGraph;
+}, [calculator]);
 
-const useResultMessage = (calculator: DeliveryRouteCalculator, lables: string[], selectedTab: number) => {
+const useResultMessage = (
+  calculator: DeliveryRouteCalculator,
+  lables: string[],
+  selectedTab: number,
+) => {
   const [resultMessage, setResultMessage] = useState<string | null>(null);
   useMemo(() => {
     if (lables.length < 2) {
@@ -49,38 +51,36 @@ const useResultMessage = (calculator: DeliveryRouteCalculator, lables: string[],
       case 2: {
 
       }
+      default: {
+
+      }
     }
   }, [lables, selectedTab]);
   return resultMessage;
 };
 
-const useRest = (setCity: (value: string) => void, setLables: (value: string[]) => void) => {
-  return useCallback(() => {
-    setCity('-1');
-    setLables([]);
-  }, [setCity, setLables])
-}
+const useRest = (setCity: (value: string) => void, setLables: (value: string[]) => void) => useCallback(() => {
+  setCity('-1');
+  setLables([]);
+}, [setCity, setLables]);
 
 const useAddCity = (
   setCity: (value: string) => void,
   setLables: (value: string[]) => void,
   labels: string[],
-  city: string) => {
-  return useCallback(() => {
-    setCity('-1');
-    setLables([
-      ...labels,
-      city,
-    ]);
-  }, [setCity, setLables, labels, city])
-}
+  city: string,
+) => useCallback(() => {
+  setCity('-1');
+  setLables([
+    ...labels,
+    city,
+  ]);
+}, [setCity, setLables, labels, city]);
 
-const useChangeTab = (reset: () => void, setSelectedTab: (value: number) => void) => {
-  return useCallback((tab: number) => {
-    setSelectedTab(tab);
-    reset();
-  }, [reset, setSelectedTab])
-}
+const useChangeTab = (reset: () => void, setSelectedTab: (value: number) => void) => useCallback((tab: number) => {
+  setSelectedTab(tab);
+  reset();
+}, [reset, setSelectedTab]);
 
 const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
   const [labels, setLables] = useState<string[]>(() => []);
@@ -95,9 +95,12 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
 
   return (
     <Box marginRight="10px" display="flex">
-      <VerticalTabs className={classes.tabs} tabs={tabs}
+      <VerticalTabs
+        className={classes.tabs}
+        tabs={tabs}
         selectedTab={selectedTab}
-        onChange={changeTab} />
+        onChange={changeTab}
+      />
       <Box flex="1">
         <Typography gutterBottom variant="h5" component="h3">
           {tabs[selectedTab]}

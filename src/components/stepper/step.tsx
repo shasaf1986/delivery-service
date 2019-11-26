@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Step as OriginStep, StepLabel, makeStyles, createStyles, Fade, Grow,
+  Step as OriginStep, StepLabel, makeStyles, createStyles, Grow,
 } from '@material-ui/core';
 
 interface Props {

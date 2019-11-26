@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import {
-  Typography, Button, Select, Tabs, Tab, Box, createStyles, makeStyles,
+  Tabs, Tab, createStyles, makeStyles,
 } from '@material-ui/core';
 
 const useStyles = makeStyles(
@@ -17,7 +17,9 @@ interface Props {
   onChange: (value: number) => void;
   className?: string;
 }
-const VerticalTabs: React.FC<Props> = ({ tabs, selectedTab, onChange, className = '' }) => {
+const VerticalTabs: React.FC<Props> = ({
+  tabs, selectedTab, onChange, className = '',
+}) => {
   const classes = useStyles();
   return (
     <Tabs

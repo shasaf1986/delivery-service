@@ -1,8 +1,7 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
-  Typography, Stepper as OriginStepper, StepLabel, Box, makeStyles, createStyles,
+  Stepper as OriginStepper,
 } from '@material-ui/core';
-import DeliveryRouteCalculator from '../../services/deliveryRouteCalculator/deliveryRouteCalculator';
 import Step from './step';
 
 interface Props {

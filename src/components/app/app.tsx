@@ -1,8 +1,8 @@
 import React from 'react';
 import {
-  Typography, CssBaseline, Container, TextField, Paper, Button, createMuiTheme, Box,
+  CssBaseline, Container, createMuiTheme,
 } from '@material-ui/core';
-import { ThemeProvider, createStyles, makeStyles } from '@material-ui/styles';
+import { ThemeProvider } from '@material-ui/styles';
 import DeliveryService from '../deliveryService';
 
 const theme = createMuiTheme({

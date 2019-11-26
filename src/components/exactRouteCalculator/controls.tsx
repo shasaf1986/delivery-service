@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import {
-  Typography, Button, Select, Tabs, Tab, Box, createStyles, makeStyles, Grid,
+  Button, Select, createStyles, makeStyles, Grid,
 } from '@material-ui/core';
 
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
 const useStyles = makeStyles(
   createStyles({
     select: {
-      width: '80px'
+      width: '80px',
     },
   }),
 );
@@ -28,7 +28,7 @@ const Controls: React.FC<Props> = ({
   const classes = useStyles();
   return (
     <>
-      <Grid alignItems="center" spacing={1} container >
+      <Grid alignItems="center" spacing={1} container>
         <Grid item>
           <Select
             className={classes.select}
@@ -56,12 +56,12 @@ const Controls: React.FC<Props> = ({
             disabled={!canAddCity}
           >
             Add city
-    </Button>
+          </Button>
         </Grid>
       </Grid>
       <Button onClick={onReset} size="large">
         Reset
-    </Button>
+      </Button>
     </>
   );
 };

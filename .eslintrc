@@ -2,6 +2,9 @@
   "extends": [
     "airbnb-typescript"
   ],
+  "rules": {
+    "react/prop-types": "off"
+  },
   "env": {
     "browser": true,
     "jest": true
