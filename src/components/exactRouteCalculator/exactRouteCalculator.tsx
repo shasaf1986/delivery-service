@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import {
   Typography, Button, Select, Tabs, Tab, Box, createStyles, makeStyles,
 } from '@material-ui/core';
@@ -12,27 +12,27 @@ interface Props {
 }
 
 const tabs = ['Case 1', 'Case 2', 'Case 3'];
-const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
-  const [labels, setLables] = useState<string[]>(() => []);
-  const [city, setCity] = useState('-1');
-  const [selectedTab, setSelectedTab] = useState(0);
-  const [resultMessage, setResultMessage] = useState<string | null>(null);
 
-  const cities = useMemo(() => {
+const useCities = (calculator: DeliveryRouteCalculator) => {
+  return useMemo(() => {
     const citiesFromGraph: string[] = [];
     calculator.graph.graph.forEach((_, city) => {
       citiesFromGraph.push(city);
     });
     return citiesFromGraph;
-  }, []);
+  }, [calculator]);
+}
+
+const useResultMessage = (calculator: DeliveryRouteCalculator, lables: string[], selectedTab: number) => {
+  const [resultMessage, setResultMessage] = useState<string | null>(null);
   useMemo(() => {
-    if (labels.length < 2) {
+    if (lables.length < 2) {
       setResultMessage('');
       return;
     }
     switch (selectedTab) {
       case 0: {
-        const cost = calculator.graph.getDeliveryCost(labels);
+        const cost = calculator.graph.getDeliveryCost(lables);
         setResultMessage(cost !== null ? `The cost is ${cost}` : 'No such route');
         break;
       }
@@ -43,22 +43,48 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
 
       }
     }
-  }, [labels, selectedTab]);
-  const addCity = () => {
+  }, [lables, selectedTab]);
+  return resultMessage;
+};
+
+const useRest = (setCity: (value: string) => void, setLables: (value: string[]) => void) => {
+  return useCallback(() => {
+    setCity('-1');
+    setLables([]);
+  }, [setCity, setLables])
+}
+
+const useAddCity = (
+  setCity: (value: string) => void,
+  setLables: (value: string[]) => void,
+  labels: string[],
+  city: string) => {
+  return useCallback(() => {
     setCity('-1');
     setLables([
       ...labels,
       city,
     ]);
-  };
-  const rest = () => {
-    setCity('-1');
-    setLables([]);
-  };
-  const changeTab = (tab: number) => {
+  }, [setCity, setLables, labels, city])
+}
+
+const useChangeTab = (reset: () => void, setSelectedTab: (value: number) => void) => {
+  return useCallback((tab: number) => {
     setSelectedTab(tab);
-    rest();
-  };
+    reset();
+  }, [reset, setSelectedTab])
+}
+
+const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
+  const [labels, setLables] = useState<string[]>(() => []);
+  const [city, setCity] = useState('-1');
+  const [selectedTab, setSelectedTab] = useState(0);
+  const cities = useCities(calculator);
+  const resultMessage = useResultMessage(calculator, labels, selectedTab);
+  const reset = useRest(setCity, setLables);
+  const addCity = useAddCity(setCity, setLables, labels, city);
+  const changeTab = useChangeTab(reset, setSelectedTab);
+
   return (
     <Box marginRight="10px" display="flex">
       <SideBar
@@ -74,7 +100,7 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
         <Controls
           addCity={addCity}
           canAddCity={city !== '-1'}
-          onReset={rest}
+          onReset={reset}
           onCityChange={setCity}
           selectedCity={city}
           cities={cities}
@@ -82,7 +108,6 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
         <p>{resultMessage}</p>
       </Box>
     </Box>
-
   );
 };
 
