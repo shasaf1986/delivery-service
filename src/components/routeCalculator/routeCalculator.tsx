@@ -40,6 +40,7 @@ const useResultMessage = (
       setResultMessage('');
       return;
     }
+    // eslint-disable-next-line default-case
     switch (selectedTab) {
       case 0: {
         const cost = calculator.graph.getDeliveryCost(path);
@@ -49,7 +50,7 @@ const useResultMessage = (
       case 1: {
         const [from, to] = path;
         const paths = calculator.graph.getPossiblePaths(from, to, {
-          maxLength: maxStops > 0 ? maxStops : undefined
+          maxLength: maxStops > 0 ? maxStops : undefined,
         });
         setResultMessage(`The possible routes are ${paths.length}`);
         break;
@@ -59,9 +60,7 @@ const useResultMessage = (
         const paths = calculator.graph.getShortestPath(from, to);
         const cost = paths ? paths.totalWeight : null;
         setResultMessage(cost !== null ? `The cost for the cheapest delivery route is ${cost}` : 'No such route');
-      }
-      default: {
-        return;
+        break;
       }
     }
   }, [path, selectedTab, maxStops, calculator]);
@@ -91,7 +90,10 @@ const useAddCity = (
   ]);
 }, [setCity, setPath, path, city]);
 
-const useChangeTab = (reset: () => void, setSelectedTab: (value: number) => void) => useCallback((tab: number) => {
+const useChangeTab = (
+  reset: () => void,
+  setSelectedTab: (value: number) => void,
+) => useCallback((tab: number) => {
   setSelectedTab(tab);
   reset();
 }, [reset, setSelectedTab]);

@@ -12,7 +12,7 @@ const useStyles = makeStyles(
 );
 
 const stops: number[] = [];
-for (let i = 0; i < 20; i++) {
+for (let i = 0; i < 20; i += 1) {
   stops.push(i + 1);
 }
 interface Props {
@@ -30,7 +30,7 @@ interface Props {
 const Controls: React.FC<Props> = ({
   cities, selectedCity, onReset, canAddCity,
   addCity, onCityChange, selectedMaxStops, onMaxStopsChange,
-  showMaxStops
+  showMaxStops,
 }) => {
   const classes = useStyles();
   return (
@@ -48,7 +48,7 @@ const Controls: React.FC<Props> = ({
             }}
             variant="outlined"
           >
-            <option value={0}></option>
+            <option value={0} />
             {
               cities.map((city) => <option key={city} value={city}>{city}</option>)
             }
@@ -65,29 +65,31 @@ const Controls: React.FC<Props> = ({
             Add city
           </Button>
         </Grid>
-        {showMaxStops && <>
-          <Grid item>
-            MAX STOPS
-        </Grid>
-          <Grid item>
-            <Select
-              className={classes.select}
-              native
-              value={selectedMaxStops}
-              margin="dense"
-              onChange={(event) => {
-                // @ts-ignore
-                onMaxStopsChange(event.currentTarget.value);
-              }}
-              variant="outlined"
-            >
-              <option value={-1}>∞</option>
-              {
-                stops.map((stop) => <option key={stop} value={stop}>{stop}</option>)
-              }
-            </Select>
-          </Grid>
-        </>}
+        {showMaxStops && (
+          <>
+            <Grid item>
+              MAX STOPS
+            </Grid>
+            <Grid item>
+              <Select
+                className={classes.select}
+                native
+                value={selectedMaxStops}
+                margin="dense"
+                onChange={(event) => {
+                  // @ts-ignore
+                  onMaxStopsChange(event.currentTarget.value);
+                }}
+                variant="outlined"
+              >
+                <option value={-1}>∞</option>
+                {
+                  stops.map((stop) => <option key={stop} value={stop}>{stop}</option>)
+                }
+              </Select>
+            </Grid>
+          </>
+        )}
         <Grid item>
           <Button onClick={onReset} size="large">
             Reset
