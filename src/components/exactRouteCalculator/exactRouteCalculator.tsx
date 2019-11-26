@@ -5,26 +5,14 @@ import {
 import DeliveryRouteCalculator from '../../services/deliveryRouteCalculator/deliveryRouteCalculator';
 import Stepper from '../stepper';
 import InputGroup from '../inputGroup';
+import SideBar from './sideBar';
 
 interface Props {
   calculator: DeliveryRouteCalculator;
 }
 
-const useStyles = makeStyles(
-  createStyles({
-    bar: {
-      borderRight: '1px solid rgba(0, 0, 0, 0.12)',
-      marginRight: '15px',
-      marginTop: '-16px',
-      marginBottom: '-16px',
-      marginLeft: '-16px',
-    },
-  }),
-);
-
 const tabs = ['Case 1', 'Case 2', 'Case 3'];
 const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
-  const classes = useStyles();
   const [labels, setLables] = useState<string[]>(() => []);
   const [city, setCity] = useState('-1');
   const [selectedTab, setSelectedTab] = useState(0);
@@ -36,6 +24,15 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
     });
     return citiesFromGraph;
   }, []);
+  useMemo(() => {
+    if (labels.length === 2) {
+      const cost = calculator.graph.getDeliveryCost(labels);
+      console.log(cost);
+    }
+    console.log(labels);
+  }, [
+    labels
+  ]);
 
   const canAddCity = city !== '-1';
   const addCity = () => {
@@ -51,19 +48,9 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
   };
   return (
     <Box marginRight="10px" display="flex">
-      <Tabs
-        className={classes.bar}
-        orientation="vertical"
-        variant="scrollable"
-        value={selectedTab}
-        onChange={(event, newValue) => {
-          setSelectedTab(newValue);
-        }}
-      >
-        {
-          tabs.map((tab) => <Tab key={tab} label={tab} />)
-        }
-      </Tabs>
+      <SideBar tabs={tabs} selectedTab={selectedTab} onChange={(tab) => {
+        setSelectedTab(tab);
+      }} />
       <Box flex="1">
         <Typography gutterBottom variant="h5" component="h3">
           {tabs[selectedTab]}
