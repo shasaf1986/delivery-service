@@ -16,6 +16,7 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
   const [labels, setLables] = useState<string[]>(() => []);
   const [city, setCity] = useState('-1');
   const [selectedTab, setSelectedTab] = useState(0);
+  const [resultMessage, setResultMessage] = useState<string | null>(null);
 
   const cities = useMemo(() => {
     const citiesFromGraph: string[] = [];
@@ -26,13 +27,23 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
   }, []);
   useMemo(() => {
     if (labels.length < 2) {
+      setResultMessage('');
       return;
     }
-    const cost = calculator.graph.getDeliveryCost(labels);
-    console.log(cost);
-  }, [
-    labels,
-  ]);
+    switch (selectedTab) {
+      case 0: {
+        const cost = calculator.graph.getDeliveryCost(labels);
+        setResultMessage(cost !== null ? `The cost is ${cost}` : 'No such route');
+        break;
+      }
+      case 1: {
+
+      }
+      case 2: {
+
+      }
+    }
+  }, [labels, selectedTab]);
   const addCity = () => {
     setCity('-1');
     setLables([
@@ -44,14 +55,16 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
     setCity('-1');
     setLables([]);
   };
+  const changeTab = (tab: number) => {
+    setSelectedTab(tab);
+    rest();
+  };
   return (
     <Box marginRight="10px" display="flex">
       <SideBar
         tabs={tabs}
         selectedTab={selectedTab}
-        onChange={(tab) => {
-          setSelectedTab(tab);
-        }}
+        onChange={changeTab}
       />
       <Box flex="1">
         <Typography gutterBottom variant="h5" component="h3">
@@ -62,14 +75,14 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
           addCity={addCity}
           canAddCity={city !== '-1'}
           onReset={rest}
-          onCityChange={(city) => {
-            setCity(city);
-          }}
+          onCityChange={setCity}
           selectedCity={city}
           cities={cities}
         />
+        <p>{resultMessage}</p>
       </Box>
     </Box>
+
   );
 };
 
