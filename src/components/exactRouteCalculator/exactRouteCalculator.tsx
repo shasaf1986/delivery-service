@@ -55,7 +55,10 @@ const useResultMessage = (
         break;
       }
       case 2: {
-
+        const [from, to] = lables;
+        const paths = calculator.graph.getShortestPath(from, to);
+        const cost = paths ? paths.totalWeight : null;
+        setResultMessage(cost !== null ? `The cost for cheapest delivery route is ${cost}` : 'No such route');
       }
       default: {
         return;
