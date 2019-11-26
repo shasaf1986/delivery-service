@@ -2,7 +2,7 @@ import Graph from '../../utils/graph';
 
 
 export default class DeliveryRouteCalculator {
-  private graph: Graph = new Graph();
+  graph: Graph = new Graph();
 
   constructor(rawRoutes: string) {
     rawRoutes.split(',').forEach((rawRoute) => {

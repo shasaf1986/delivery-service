@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Typography, Button, Select } from '@material-ui/core';
 import DeliveryRouteCalculator from '../../services/deliveryRouteCalculator/deliveryRouteCalculator';
 import Stepper from '../stepper';
@@ -12,6 +12,15 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
   const [labels, setLables] = useState<string[]>(() => []);
   const [city, setCity] = useState('-1');
 
+  const cities = useMemo(() => {
+    const citiesFromGraph: string[] = [];
+    calculator.graph.graph.forEach((_, city) => {
+      citiesFromGraph.push(city);
+    });
+    return citiesFromGraph;
+  }, []);
+
+  const canAddCity = city !== '-1';
   const addCity = () => {
     setCity('-1');
     setLables([
@@ -23,9 +32,6 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
     setCity('-1');
     setLables([]);
   };
-  const cities = [
-    'A', 'B', 'C', 'E', 'F',
-  ];
   return (
     <>
       <Typography gutterBottom variant="h5" component="h3">
@@ -52,12 +58,13 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
           variant="contained"
           color="primary"
           size="large"
+          disabled={!canAddCity}
         >
           Add city
         </Button>
         <Button
           onClick={rest}
-          variant="contained"
+          // variant="contained"
           size="large"
         >
           Reset
