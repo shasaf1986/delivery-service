@@ -96,7 +96,7 @@ const useChangeTab = (reset: () => void, setSelectedTab: (value: number) => void
   reset();
 }, [reset, setSelectedTab]);
 
-const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
+const RouteCalculator: React.FC<Props> = ({ calculator }) => {
   const [labels, setLables] = useState<string[]>(() => []);
   const [city, setCity] = useState('-1');
   const [maxStops, setMaxStops] = useState(-1);
@@ -142,4 +142,4 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
   );
 };
 
-export default ExactRouteCalculator;
+export default RouteCalculator;

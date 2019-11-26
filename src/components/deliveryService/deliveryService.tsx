@@ -3,7 +3,7 @@ import { Typography, Paper } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/styles';
 import SetGraph from '../setGraph';
 import DeliveryRouteCalculator from '../../services/deliveryRouteCalculator/deliveryRouteCalculator';
-import ExactRouteCalculator from '../exactRouteCalculator';
+import RouteCalculator from '../routeCalculator';
 
 const useStyles = makeStyles(
   createStyles({
@@ -32,7 +32,7 @@ const DeliveryService: React.FC = () => {
         }}
         />
         )}
-        {mode === '1' && <ExactRouteCalculator calculator={calculator!} />}
+        {mode === '1' && <RouteCalculator calculator={calculator!} />}
       </Paper>
     </Typography>
   );
