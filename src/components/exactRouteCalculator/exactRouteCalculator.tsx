@@ -1,5 +1,7 @@
 import React, { useState, useMemo } from 'react';
-import { Typography, Button, Select, Tabs, Tab, Box, createStyles, makeStyles } from '@material-ui/core';
+import {
+  Typography, Button, Select, Tabs, Tab, Box, createStyles, makeStyles,
+} from '@material-ui/core';
 import DeliveryRouteCalculator from '../../services/deliveryRouteCalculator/deliveryRouteCalculator';
 import Stepper from '../stepper';
 import InputGroup from '../inputGroup';
@@ -15,8 +17,8 @@ const useStyles = makeStyles(
       marginRight: '15px',
       marginTop: '-16px',
       marginBottom: '-16px',
-      marginLeft: '-16px'
-    }
+      marginLeft: '-16px',
+    },
   }),
 );
 
@@ -48,7 +50,7 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
     setLables([]);
   };
   return (
-    <Box marginRight={"10px"} display="flex">
+    <Box marginRight="10px" display="flex">
       <Tabs
         className={classes.bar}
         orientation="vertical"
@@ -59,9 +61,7 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
         }}
       >
         {
-          tabs.map((tab) =>
-            <Tab key={tab} label={tab} />
-          )
+          tabs.map((tab) => <Tab key={tab} label={tab} />)
         }
       </Tabs>
       <Box flex="1">
@@ -92,14 +92,14 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
             disabled={!canAddCity}
           >
             Add city
-        </Button>
+          </Button>
           <Button
             onClick={rest}
             // variant="contained"
             size="large"
           >
             Reset
-        </Button>
+          </Button>
         </InputGroup>
       </Box>
 
