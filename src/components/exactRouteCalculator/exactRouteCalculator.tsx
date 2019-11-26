@@ -4,8 +4,8 @@ import {
 } from '@material-ui/core';
 import DeliveryRouteCalculator from '../../services/deliveryRouteCalculator/deliveryRouteCalculator';
 import Stepper from '../stepper';
-import InputGroup from '../inputGroup';
 import SideBar from './sideBar';
+import Controls from './controls';
 
 interface Props {
   calculator: DeliveryRouteCalculator;
@@ -25,16 +25,14 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
     return citiesFromGraph;
   }, []);
   useMemo(() => {
-    if (labels.length === 2) {
-      const cost = calculator.graph.getDeliveryCost(labels);
-      console.log(cost);
+    if (labels.length < 2) {
+      return;
     }
-    console.log(labels);
+    const cost = calculator.graph.getDeliveryCost(labels);
+    console.log(cost);
   }, [
     labels
   ]);
-
-  const canAddCity = city !== '-1';
   const addCity = () => {
     setCity('-1');
     setLables([
@@ -56,40 +54,17 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
           {tabs[selectedTab]}
         </Typography>
         <Stepper lables={labels} />
-        <InputGroup>
-          <Select
-            native
-            value={city}
-            onChange={(event) => {
-              // @ts-ignore
-              setCity(event.currentTarget.value);
-            }}
-            variant="outlined"
-          >
-            <option value="-1">City</option>
-            {
-              cities.map((city) => <option key={city} value={city}>{city}</option>)
-            }
-          </Select>
-          <Button
-            onClick={addCity}
-            variant="contained"
-            color="primary"
-            size="large"
-            disabled={!canAddCity}
-          >
-            Add city
-          </Button>
-          <Button
-            onClick={rest}
-            // variant="contained"
-            size="large"
-          >
-            Reset
-          </Button>
-        </InputGroup>
+        <Controls
+          addCity={addCity}
+          canAddCity={city !== '-1'}
+          onReset={rest}
+          onCityChange={(city) => {
+            setCity(city);
+          }}
+          selectedCity={city}
+          cities={cities}
+        />
       </Box>
-
     </Box>
   );
 };
