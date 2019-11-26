@@ -58,7 +58,7 @@ const useResultMessage = (
         const [from, to] = lables;
         const paths = calculator.graph.getShortestPath(from, to);
         const cost = paths ? paths.totalWeight : null;
-        setResultMessage(cost !== null ? `The cost for cheapest delivery route is ${cost}` : 'No such route');
+        setResultMessage(cost !== null ? `The cost for the cheapest delivery route is ${cost}` : 'No such route');
       }
       default: {
         return;
@@ -109,6 +109,8 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
   const classes = useStyles();
   // we allow multi cities in case 1 only
   const canAddCity = city !== '-1' && (selectedTab === 0 || labels.length < 2);
+  // show max stops dropdown for case 2 only
+  const showMaxStops = selectedTab === 1;
 
   return (
     <Box marginRight="10px" display="flex">
@@ -124,6 +126,7 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
         </Typography>
         <Stepper lables={labels} />
         <Controls
+          showMaxStops={showMaxStops}
           addCity={addCity}
           canAddCity={canAddCity}
           onReset={reset}

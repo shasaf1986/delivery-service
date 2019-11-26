@@ -24,11 +24,13 @@ interface Props {
   onReset: () => void;
   onCityChange: (value: string) => void;
   onMaxStopsChange: (value: number) => void;
+  showMaxStops: boolean;
 }
 
 const Controls: React.FC<Props> = ({
   cities, selectedCity, onReset, canAddCity,
-  addCity, onCityChange, selectedMaxStops, onMaxStopsChange
+  addCity, onCityChange, selectedMaxStops, onMaxStopsChange,
+  showMaxStops
 }) => {
   const classes = useStyles();
   return (
@@ -63,27 +65,29 @@ const Controls: React.FC<Props> = ({
             Add city
           </Button>
         </Grid>
-        <Grid item>
-          MAX STOPS
+        {showMaxStops && <>
+          <Grid item>
+            MAX STOPS
         </Grid>
-        <Grid item>
-          <Select
-            className={classes.select}
-            native
-            value={selectedMaxStops}
-            margin="dense"
-            onChange={(event) => {
-              // @ts-ignore
-              onMaxStopsChange(event.currentTarget.value);
-            }}
-            variant="outlined"
-          >
-            <option value={-1}>∞</option>
-            {
-              stops.map((stop) => <option key={stop} value={stop}>{stop}</option>)
-            }
-          </Select>
-        </Grid>
+          <Grid item>
+            <Select
+              className={classes.select}
+              native
+              value={selectedMaxStops}
+              margin="dense"
+              onChange={(event) => {
+                // @ts-ignore
+                onMaxStopsChange(event.currentTarget.value);
+              }}
+              variant="outlined"
+            >
+              <option value={-1}>∞</option>
+              {
+                stops.map((stop) => <option key={stop} value={stop}>{stop}</option>)
+              }
+            </Select>
+          </Grid>
+        </>}
         <Grid item>
           <Button onClick={onReset} size="large">
             Reset
