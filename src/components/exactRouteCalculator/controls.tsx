@@ -3,15 +3,6 @@ import {
   Button, Select, createStyles, makeStyles, Grid,
 } from '@material-ui/core';
 
-interface Props {
-  cities: string[];
-  selectedCity: string;
-  canAddCity: boolean;
-  addCity: () => void;
-  onReset: () => void;
-  onCityChange: (city: string) => void;
-}
-
 const useStyles = makeStyles(
   createStyles({
     select: {
@@ -20,10 +11,24 @@ const useStyles = makeStyles(
   }),
 );
 
+const stops: number[] = [];
+for (let i = 0; i < 20; i++) {
+  stops.push(i + 1);
+}
+interface Props {
+  cities: string[];
+  selectedCity: string;
+  canAddCity: boolean;
+  selectedMaxStops: number;
+  addCity: () => void;
+  onReset: () => void;
+  onCityChange: (value: string) => void;
+  onMaxStopsChange: (value: number) => void;
+}
 
 const Controls: React.FC<Props> = ({
   cities, selectedCity, onReset, canAddCity,
-  addCity, onCityChange,
+  addCity, onCityChange, selectedMaxStops, onMaxStopsChange
 }) => {
   const classes = useStyles();
   return (
@@ -41,7 +46,7 @@ const Controls: React.FC<Props> = ({
             }}
             variant="outlined"
           >
-            <option value="-1">City</option>
+            <option value={0}></option>
             {
               cities.map((city) => <option key={city} value={city}>{city}</option>)
             }
@@ -58,10 +63,33 @@ const Controls: React.FC<Props> = ({
             Add city
           </Button>
         </Grid>
+        <Grid item>
+          MAX STOPS
+        </Grid>
+        <Grid item>
+          <Select
+            className={classes.select}
+            native
+            value={selectedMaxStops}
+            margin="dense"
+            onChange={(event) => {
+              // @ts-ignore
+              onMaxStopsChange(event.currentTarget.value);
+            }}
+            variant="outlined"
+          >
+            <option value={-1}>∞</option>
+            {
+              stops.map((stop) => <option key={stop} value={stop}>{stop}</option>)
+            }
+          </Select>
+        </Grid>
+        <Grid item>
+          <Button onClick={onReset} size="large">
+            Reset
+          </Button>
+        </Grid>
       </Grid>
-      <Button onClick={onReset} size="large">
-        Reset
-      </Button>
     </>
   );
 };

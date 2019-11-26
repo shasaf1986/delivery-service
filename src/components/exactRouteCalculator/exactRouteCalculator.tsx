@@ -32,6 +32,7 @@ const useResultMessage = (
   calculator: DeliveryRouteCalculator,
   lables: string[],
   selectedTab: number,
+  maxStops: number,
 ) => {
   const [resultMessage, setResultMessage] = useState<string | null>(null);
   useMemo(() => {
@@ -46,23 +47,33 @@ const useResultMessage = (
         break;
       }
       case 1: {
-
+        const [from, to] = lables;
+        const paths = calculator.graph.getPossiblePaths(from, to, {
+          maxLength: maxStops > 0 ? maxStops : undefined
+        });
+        setResultMessage(`The possible routes are ${paths.length}`);
+        break;
       }
       case 2: {
 
       }
       default: {
-
+        return;
       }
     }
-  }, [lables, selectedTab]);
+  }, [lables, selectedTab, maxStops, calculator]);
   return resultMessage;
 };
 
-const useRest = (setCity: (value: string) => void, setLables: (value: string[]) => void) => useCallback(() => {
+const useRest = (
+  setCity: (value: string) => void,
+  setLables: (value: string[]) => void,
+  setMaxStops: (value: number) => void,
+) => useCallback(() => {
   setCity('-1');
+  setMaxStops(-1);
   setLables([]);
-}, [setCity, setLables]);
+}, [setCity, setLables, setMaxStops]);
 
 const useAddCity = (
   setCity: (value: string) => void,
@@ -85,13 +96,16 @@ const useChangeTab = (reset: () => void, setSelectedTab: (value: number) => void
 const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
   const [labels, setLables] = useState<string[]>(() => []);
   const [city, setCity] = useState('-1');
+  const [maxStops, setMaxStops] = useState(-1);
   const [selectedTab, setSelectedTab] = useState(0);
   const cities = useCities(calculator);
-  const resultMessage = useResultMessage(calculator, labels, selectedTab);
-  const reset = useRest(setCity, setLables);
+  const resultMessage = useResultMessage(calculator, labels, selectedTab, maxStops);
+  const reset = useRest(setCity, setLables, setMaxStops);
   const addCity = useAddCity(setCity, setLables, labels, city);
   const changeTab = useChangeTab(reset, setSelectedTab);
   const classes = useStyles();
+  // we allow multi cities in case 1 only
+  const canAddCity = city !== '-1' && (selectedTab === 0 || labels.length < 2);
 
   return (
     <Box marginRight="10px" display="flex">
@@ -108,11 +122,13 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
         <Stepper lables={labels} />
         <Controls
           addCity={addCity}
-          canAddCity={city !== '-1'}
+          canAddCity={canAddCity}
           onReset={reset}
           onCityChange={setCity}
           selectedCity={city}
           cities={cities}
+          selectedMaxStops={maxStops}
+          onMaxStopsChange={setMaxStops}
         />
         <p>{resultMessage}</p>
       </Box>
