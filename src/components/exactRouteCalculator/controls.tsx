@@ -14,41 +14,36 @@ interface Props {
 
 const Controls: React.FC<Props> = ({
   cities, selectedCity, onReset, canAddCity,
-  addCity, onCityChange
-}) => {
-
-  return (
-    <>
-      <InputGroup>
-        <Select
-          native
-          value={selectedCity}
-          onChange={(event) => {
-            // @ts-ignore
-            onCityChange(event.currentTarget.value);
-          }}
-          variant="outlined"
-        >
-          <option value="-1">City</option>
-          {
-            cities.map((city) => <option key={city} value={city}>{city}</option>)
-          }
-        </Select>
-        <Button
-          onClick={addCity}
-          variant="contained"
-          color="primary"
-          size="large"
-          disabled={!canAddCity}
-        >
-          Add city
-          </Button>
-        <Button onClick={onReset} size="large" >
-          Reset
-          </Button>
-      </InputGroup>
-    </>
-  );
-};
+  addCity, onCityChange,
+}) => (
+  <>
+    <Select
+      native
+      value={selectedCity}
+      onChange={(event) => {
+        // @ts-ignore
+        onCityChange(event.currentTarget.value);
+      }}
+      variant="outlined"
+    >
+      <option value="-1">City</option>
+      {
+          cities.map((city) => <option key={city} value={city}>{city}</option>)
+        }
+    </Select>
+    <Button
+      onClick={addCity}
+      variant="contained"
+      color="primary"
+      size="large"
+      disabled={!canAddCity}
+    >
+        Add city
+    </Button>
+    <Button onClick={onReset} size="large">
+        Reset
+    </Button>
+  </>
+);
 
 export default Controls;

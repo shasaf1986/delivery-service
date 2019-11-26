@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Typography, TextField, Button, createStyles, makeStyles, Grid } from '@material-ui/core';
+import {
+  Typography, TextField, Button, createStyles, makeStyles, Grid,
+} from '@material-ui/core';
 
 interface Props {
   onSelected: (routes: string) => void;
@@ -33,7 +35,7 @@ const SetGraph: React.FC<Props> = ({ onSelected }) => {
             color="primary"
           >
             Sumbit
-        </Button>
+          </Button>
         </Grid>
       </Grid>
     </>

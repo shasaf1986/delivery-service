@@ -31,7 +31,7 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
     const cost = calculator.graph.getDeliveryCost(labels);
     console.log(cost);
   }, [
-    labels
+    labels,
   ]);
   const addCity = () => {
     setCity('-1');
@@ -46,9 +46,13 @@ const ExactRouteCalculator: React.FC<Props> = ({ calculator }) => {
   };
   return (
     <Box marginRight="10px" display="flex">
-      <SideBar tabs={tabs} selectedTab={selectedTab} onChange={(tab) => {
-        setSelectedTab(tab);
-      }} />
+      <SideBar
+        tabs={tabs}
+        selectedTab={selectedTab}
+        onChange={(tab) => {
+          setSelectedTab(tab);
+        }}
+      />
       <Box flex="1">
         <Typography gutterBottom variant="h5" component="h3">
           {tabs[selectedTab]}
