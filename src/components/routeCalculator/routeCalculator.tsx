@@ -21,11 +21,7 @@ const useStyles = makeStyles(
   }),
 );
 const useCities = (calculator: DeliveryRouteCalculator) => useMemo(() => {
-  const citiesFromGraph: string[] = [];
-  calculator.graph.graph.forEach((_, city) => {
-    citiesFromGraph.push(city);
-  });
-  return citiesFromGraph;
+  return calculator.getVertices();
 }, [calculator]);
 
 const useResultMessage = (
@@ -43,22 +39,21 @@ const useResultMessage = (
     // eslint-disable-next-line default-case
     switch (selectedTab) {
       case 0: {
-        const cost = calculator.graph.getDeliveryCost(path);
+        const cost = calculator.getDeliveryCost(path);
         setResultMessage(cost !== null ? `The cost is ${cost}` : 'No such route');
         break;
       }
       case 1: {
         const [from, to] = path;
-        const paths = calculator.graph.getPossiblePaths(from, to, {
-          maxLength: maxStops > 0 ? maxStops : undefined,
+        const count = calculator.getPossiblePathsCount(from, to, {
+          maxStops,
         });
-        setResultMessage(`The possible routes are ${paths.length}`);
+        setResultMessage(`The possible routes are ${count}`);
         break;
       }
       case 2: {
         const [from, to] = path;
-        const paths = calculator.graph.getShortestPath(from, to);
-        const cost = paths ? paths.totalWeight : null;
+        const cost = calculator.getShortestPathLength(from, to);
         setResultMessage(cost !== null ? `The cost for the cheapest delivery route is ${cost}` : 'No such route');
         break;
       }

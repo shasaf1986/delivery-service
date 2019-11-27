@@ -1,4 +1,4 @@
-export default interface PathData {
+export interface PathData {
   totalWeight: number;
   path: string[];
 }
