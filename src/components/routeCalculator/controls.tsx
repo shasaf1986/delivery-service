@@ -78,6 +78,7 @@ const Controls: React.FC<Props> = ({
                 margin="dense"
                 onChange={(event) => {
                   // @ts-ignore
+                  // eslint-disable-next-line radix
                   onMaxStopsChange(Number.parseInt(event.currentTarget.value));
                 }}
                 variant="outlined"

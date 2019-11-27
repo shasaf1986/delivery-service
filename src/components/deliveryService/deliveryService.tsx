@@ -30,8 +30,7 @@ const DeliveryService: React.FC = () => {
             try {
               calculatorRef.current = DeliveryRouteCalculator.fromRawGraph(rawGraph);
               setIsGraphReady(true);
-            }
-            catch (error) {
+            } catch (error) {
               alert('Wrong inpot');
             }
           }}
