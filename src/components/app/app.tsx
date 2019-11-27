@@ -2,7 +2,7 @@ import React from 'react';
 import {
   CssBaseline, Container, createMuiTheme,
 } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/styles';
+import { ThemeProvider, makeStyles, createStyles } from '@material-ui/styles';
 import DeliveryService from '../deliveryService';
 
 const theme = createMuiTheme({
@@ -13,13 +13,25 @@ const theme = createMuiTheme({
   },
 });
 
-const App: React.FC = () => (
-  <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <Container>
-      <DeliveryService />
-    </Container>
-  </ThemeProvider>
+const useStyles = makeStyles(
+  createStyles({
+    root: {
+      paddingTop: '15px',
+    },
+  }),
 );
+
+const App: React.FC = () => {
+  const classes = useStyles();
+
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Container className={classes.root}>
+        <DeliveryService />
+      </Container>
+    </ThemeProvider>
+  );
+};
 
 export default App;
