@@ -46,7 +46,7 @@ const useResultMessage = (
       case 1: {
         const [from, to] = path;
         const count = calculator.getPossiblePathsCount(from, to, {
-          maxStops,
+          maxStops: maxStops > 0 ? maxStops : undefined,
         });
         setResultMessage(`The possible routes are ${count}`);
         break;

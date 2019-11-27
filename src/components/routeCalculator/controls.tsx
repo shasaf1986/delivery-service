@@ -78,7 +78,7 @@ const Controls: React.FC<Props> = ({
                 margin="dense"
                 onChange={(event) => {
                   // @ts-ignore
-                  onMaxStopsChange(event.currentTarget.value);
+                  onMaxStopsChange(Number.parseInt(event.currentTarget.value));
                 }}
                 variant="outlined"
               >
