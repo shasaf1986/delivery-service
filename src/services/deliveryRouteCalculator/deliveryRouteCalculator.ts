@@ -2,7 +2,7 @@ import { PathData } from './types';
 
 
 export default class DeliveryRouteCalculator {
-  _graph: Map<string, Map<string, number>> = new Map();
+  private graph: Map<string, Map<string, number>> = new Map();
 
   static fromRawGraph(rawGraph: string) {
     const deliveryRouteCalculator = new DeliveryRouteCalculator();
@@ -18,26 +18,28 @@ export default class DeliveryRouteCalculator {
     if (typeof weight !== 'number' || Number.isNaN(weight) || weight < 0) {
       throw new Error('weight should be >= 0');
     }
-    let fromAdjacency = this._graph.get(from);
+    let fromAdjacency = this.graph.get(from);
     if (!fromAdjacency) {
       fromAdjacency = new Map();
-      this._graph.set(from, fromAdjacency);
+      this.graph.set(from, fromAdjacency);
     }
     if (fromAdjacency.has(to)) {
       throw new Error(`edge from ${from} to ${to} already exist`);
     }
     fromAdjacency.set(to, weight);
-    if (!this._graph.has(to)) {
-      this._graph.set(to, new Map());
+    if (!this.graph.has(to)) {
+      this.graph.set(to, new Map());
     }
   }
+
   getVertices() {
     const vertices: string[] = [];
-    this._graph.forEach((_, vertex) => {
+    this.graph.forEach((_, vertex) => {
       vertices.push(vertex);
     });
     return vertices;
   }
+
   getDeliveryCost(deliveryRoute: string[]) {
     if (deliveryRoute.length < 2) {
       throw new Error('deliveryRoute should >= 2');
@@ -46,7 +48,7 @@ export default class DeliveryRouteCalculator {
     for (let i = 0; i < deliveryRoute.length - 1; i += 1) {
       const fromTown = deliveryRoute[i];
       const toTown = deliveryRoute[i + 1];
-      const adjacency = this._graph.get(fromTown);
+      const adjacency = this.graph.get(fromTown);
       if (!adjacency || !adjacency.has(toTown)) {
         return null;
       }
@@ -56,7 +58,7 @@ export default class DeliveryRouteCalculator {
     return cost;
   }
 
-  _getPossiblePaths(
+  private getPossiblePaths(
     from: string, to: string,
     {
       maxLength = Infinity,
@@ -67,20 +69,20 @@ export default class DeliveryRouteCalculator {
     const path: string[] = [];
     const paths: PathData[] = [];
     let totalWeight = 0;
-
+    // eslint-disable-next-line no-shadow
     const getPossiblePathsRecursive = (from: string, to: string, weight: number) => {
-      const node = this._graph.get(from);
+      const node = this.graph.get(from);
       const isReachedMaxLength = (path.length + 2) > maxLength;
       if (!node || isReachedMaxLength) {
         return paths;
       }
       path.push(from);
       totalWeight += weight;
-      node.forEach((weight, neighbor) => {
+      node.forEach((weightToNeighbor, neighbor) => {
         if (neighbor === to) {
           const pathData: PathData = {
             path: [...path, to],
-            totalWeight: totalWeight + weight,
+            totalWeight: totalWeight + weightToNeighbor,
           };
           paths.push(pathData);
         } else {
@@ -89,7 +91,7 @@ export default class DeliveryRouteCalculator {
             return vertex === from && nextVertex === neighbor;
           });
           if (!hasCircle) {
-            getPossiblePathsRecursive(neighbor, to, weight);
+            getPossiblePathsRecursive(neighbor, to, weightToNeighbor);
           }
         }
       });
@@ -108,16 +110,17 @@ export default class DeliveryRouteCalculator {
       maxStops?: number,
     } = {},
   ) {
-    return this._getPossiblePaths(from, to, { maxLength: maxStops + 1 }).length;
+    return this.getPossiblePaths(from, to, { maxLength: maxStops + 1 }).length;
   }
 
   getShortestPathLength(from: string, to: string) {
-    const path = this._getShortestPath(from, to);
+    const path = this.getShortestPath(from, to);
     return path ? path.totalWeight : null;
   }
+
   // TODO : implement it with diextra for better performance
-  _getShortestPath(from: string, to: string) {
-    const paths = this._getPossiblePaths(from, to);
+  private getShortestPath(from: string, to: string) {
+    const paths = this.getPossiblePaths(from, to);
     if (paths.length === 0) {
       return null;
     }

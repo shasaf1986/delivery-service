@@ -20,9 +20,9 @@ const useStyles = makeStyles(
     },
   }),
 );
-const useCities = (calculator: DeliveryRouteCalculator) => useMemo(() => {
-  return calculator.getVertices();
-}, [calculator]);
+const useCities = (
+  calculator: DeliveryRouteCalculator,
+) => useMemo(() => calculator.getVertices(), [calculator]);
 
 const useResultMessage = (
   calculator: DeliveryRouteCalculator,
