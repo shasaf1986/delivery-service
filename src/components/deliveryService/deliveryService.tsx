@@ -27,8 +27,13 @@ const DeliveryService: React.FC = () => {
       <Paper className={classes.paper}>
         {!isGraphReady && (
           <SetGraph onSelected={(rawGraph) => {
-            calculatorRef.current = DeliveryRouteCalculator.fromRawGraph(rawGraph);
-            setIsGraphReady(true);
+            try {
+              calculatorRef.current = DeliveryRouteCalculator.fromRawGraph(rawGraph);
+              setIsGraphReady(true);
+            }
+            catch (error) {
+              alert('Wrong inpot');
+            }
           }}
           />
         )}
