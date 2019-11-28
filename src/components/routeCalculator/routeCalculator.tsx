@@ -110,7 +110,7 @@ const RouteCalculator: React.FC<Props> = ({ calculator }) => {
   const showMaxStops = selectedTab === 1;
 
   return (
-    <Box marginRight="10px" display="flex">
+    <Box display="flex">
       <VerticalTabs
         className={classes.tabs}
         tabs={tabs}
