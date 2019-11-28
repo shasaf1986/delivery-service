@@ -10,16 +10,16 @@ interface Props {
 }
 
 const Stepper: React.FC<Props> = ({ path }) => {
-  const shouldAddFirstLabel = path.length === 0;
-  const shouldAddLastLabel = path.length === 0 || path.length === 1;
+  const shouldAddFirstStep = path.length === 0;
+  const shouldAddLastStep = path.length < 2;
 
   return (
     <OriginStepper>
-      {shouldAddFirstLabel && <Step label="?" disabled />}
+      {shouldAddFirstStep && <Step label="?" disabled />}
       {
         path.map((node, index) => <Step key={index.toString()} label={node} disabled={false} />)
       }
-      {shouldAddLastLabel && <Step label="?" disabled />}
+      {shouldAddLastStep && <Step label="?" disabled />}
     </OriginStepper>
   );
 };
