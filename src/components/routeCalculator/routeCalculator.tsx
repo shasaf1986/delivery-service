@@ -67,7 +67,7 @@ const useRest = (
   setPath: (value: string[]) => void,
   setMaxStops: (value: number) => void,
 ) => useCallback(() => {
-  setCity('-1');
+  setCity('');
   setMaxStops(-1);
   setPath([]);
 }, [setCity, setPath, setMaxStops]);
@@ -78,7 +78,7 @@ const useAddCity = (
   path: string[],
   city: string,
 ) => useCallback(() => {
-  setCity('-1');
+  setCity('');
   setPath([
     ...path,
     city,
@@ -95,7 +95,7 @@ const useChangeTab = (
 
 const RouteCalculator: React.FC<Props> = ({ calculator }) => {
   const [path, setPath] = useState<string[]>(() => []);
-  const [city, setCity] = useState('-1');
+  const [city, setCity] = useState('');
   const [maxStops, setMaxStops] = useState(-1);
   const [selectedTab, setSelectedTab] = useState(0);
   const cities = useCities(calculator);
@@ -105,7 +105,7 @@ const RouteCalculator: React.FC<Props> = ({ calculator }) => {
   const changeTab = useChangeTab(reset, setSelectedTab);
   const classes = useStyles();
   // we allow multi cities in case 1 only
-  const canAddCity = city !== '-1' && (selectedTab === 0 || path.length < 2);
+  const canAddCity = !!city && (selectedTab === 0 || path.length < 2);
   // show max stops dropdown for case 2 only
   const showMaxStops = selectedTab === 1;
 

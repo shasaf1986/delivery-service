@@ -48,7 +48,7 @@ const Controls: React.FC<Props> = ({
             }}
             variant="outlined"
           >
-            <option value={0} />
+            <option value="" />
             {
               cities.map((city) => <option key={city} value={city}>{city}</option>)
             }
