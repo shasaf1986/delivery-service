@@ -31,7 +31,7 @@ const DeliveryService: React.FC = () => {
               calculatorRef.current = DeliveryRouteCalculator.fromRawGraph(rawGraph);
               setIsGraphReady(true);
             } catch (error) {
-              alert('Wrong inpot');
+              alert('Wrong input');
             }
           }}
           />
