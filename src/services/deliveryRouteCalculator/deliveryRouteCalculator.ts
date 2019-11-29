@@ -1,6 +1,5 @@
 import { PathData } from './types';
 
-
 export default class DeliveryRouteCalculator {
   private graph: Map<string, Map<string, number>> = new Map();
 
@@ -66,28 +65,30 @@ export default class DeliveryRouteCalculator {
       maxLength?: number,
     } = {},
   ) {
-    const path: string[] = [];
+    const tempPath: PathData = {
+      path: [],
+      totalWeight: 0,
+    };
     const paths: PathData[] = [];
-    let totalWeight = 0;
     // eslint-disable-next-line no-shadow
     const getPossiblePathsRecursive = (from: string, to: string, weight: number) => {
-      const node = this.graph.get(from);
-      const isReachedMaxLength = (path.length + 2) > maxLength;
-      if (!node || isReachedMaxLength) {
+      const adjacency = this.graph.get(from);
+      const isReachedMaxLength = (tempPath.path.length + 2) > maxLength;
+      if (!adjacency || isReachedMaxLength) {
         return paths;
       }
-      path.push(from);
-      totalWeight += weight;
-      node.forEach((weightToNeighbor, neighbor) => {
+      tempPath.path.push(from);
+      tempPath.totalWeight += weight;
+      adjacency.forEach((weightToNeighbor, neighbor) => {
         if (neighbor === to) {
           const pathData: PathData = {
-            path: [...path, to],
-            totalWeight: totalWeight + weightToNeighbor,
+            path: [...tempPath.path, to],
+            totalWeight: tempPath.totalWeight + weightToNeighbor,
           };
           paths.push(pathData);
         } else {
-          const hasCircle = path.some((vertex, index) => {
-            const nextVertex = path[index + 1];
+          const hasCircle = tempPath.path.some((vertex, index) => {
+            const nextVertex = tempPath.path[index + 1];
             return vertex === from && nextVertex === neighbor;
           });
           if (!hasCircle) {
@@ -95,8 +96,8 @@ export default class DeliveryRouteCalculator {
           }
         }
       });
-      totalWeight -= weight;
-      path.pop();
+      tempPath.totalWeight -= weight;
+      tempPath.path.pop();
       return paths;
     };
     return getPossiblePathsRecursive(from, to, 0);
