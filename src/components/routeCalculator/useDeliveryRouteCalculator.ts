@@ -28,7 +28,7 @@ const useResultMessage = (
     }
     case 2: {
       const [from, to] = path;
-      const cost = calculator.getPossibleDeliveryRoutes(from, to);
+      const cost = calculator.getCheapestDeliveryRoute(from, to);
       return cost !== null ? `The cost for the cheapest delivery route is ${cost}` : 'No such route';
     }
     default: {
