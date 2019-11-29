@@ -28,7 +28,7 @@ const DeliveryService: React.FC = () => {
         {!isGraphReady && (
           <SetGraph onSelected={(rawGraph) => {
             try {
-              calculatorRef.current = DeliveryRouteCalculator.fromRawGraph(rawGraph);
+              calculatorRef.current = new DeliveryRouteCalculator(rawGraph);
               setIsGraphReady(true);
             } catch (error) {
               alert('Wrong input');

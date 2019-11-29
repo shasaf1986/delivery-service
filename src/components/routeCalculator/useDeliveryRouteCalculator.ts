@@ -3,7 +3,7 @@ import DeliveryRouteCalculator from '../../services/deliveryRouteCalculator/deli
 
 const useCities = (
   calculator: DeliveryRouteCalculator,
-) => useMemo(() => calculator.getVertices(), [calculator]);
+) => useMemo(() => calculator.getTowns(), [calculator]);
 
 const useResultMessage = (
   calculator: DeliveryRouteCalculator,
@@ -21,14 +21,14 @@ const useResultMessage = (
     }
     case 1: {
       const [from, to] = path;
-      const count = calculator.getPossiblePathsCount(from, to, {
+      const count = calculator.getPossibleDeliveryRoutes(from, to, {
         maxStops: maxStops > 0 ? maxStops : undefined,
       });
       return `The possible routes are ${count}`;
     }
     case 2: {
       const [from, to] = path;
-      const cost = calculator.getShortestPathLength(from, to);
+      const cost = calculator.getPossibleDeliveryRoutes(from, to);
       return cost !== null ? `The cost for the cheapest delivery route is ${cost}` : 'No such route';
     }
     default: {
