@@ -37,7 +37,7 @@ const useResultMessage = (
   }
 }, [path, mode, maxStops, calculator]);
 
-const useRest = (
+const useReset = (
   setCity: (value: string) => void,
   setPath: (value: string[]) => void,
   setMaxStops: (value: number) => void,
@@ -75,7 +75,7 @@ export default function useDeliveryRouteCalculator(calculator: DeliveryRouteCalc
   const [mode, setMode] = useState(0);
   const cities = useCities(calculator);
   const resultMessage = useResultMessage(calculator, path, mode, maxStops);
-  const reset = useRest(setCity, setPath, setMaxStops);
+  const reset = useReset(setCity, setPath, setMaxStops);
   const addCity = useAddCity(setCity, city, setPath, path);
   const changeMode = useChangeMode(reset, setMode);
   // we allow multi cities in case 1 only
