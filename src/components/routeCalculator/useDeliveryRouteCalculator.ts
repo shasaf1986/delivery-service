@@ -5,24 +5,6 @@ const useCities = (
   calculator: DeliveryRouteCalculator,
 ) => useMemo(() => calculator.getVertices(), [calculator]);
 
-const usePath = () => {
-  const [rawPath, setRawPath] = useState('');
-  const path = useMemo(() => rawPath ? rawPath.split(':') : [], [rawPath]);
-  const addCityToPath = useCallback((node: string) => {
-    // build path in string
-    setRawPath(rawPath ? `${rawPath}:${node}` : node);
-  }, [rawPath, setRawPath]);
-  const resetPath = useCallback(() => {
-    setRawPath('');
-  }, [setRawPath]);
-
-  return {
-    path,
-    addCityToPath,
-    resetPath,
-  };
-};
-
 const useResultMessage = (
   calculator: DeliveryRouteCalculator,
   path: string[],
@@ -57,22 +39,26 @@ const useResultMessage = (
 
 const useRest = (
   setCity: (value: string) => void,
-  resetPath: () => void,
+  setPath: (value: string[]) => void,
   setMaxStops: (value: number) => void,
 ) => useCallback(() => {
   setCity('');
   setMaxStops(-1);
-  resetPath();
-}, [setCity, resetPath, setMaxStops]);
+  setPath([]);
+}, [setCity, setPath, setMaxStops]);
 
 const useAddCity = (
   setCity: (value: string) => void,
-  addCityToPath: (value: string) => void,
   city: string,
+  setPath: (value: string[]) => void,
+  path: string[],
 ) => useCallback(() => {
   setCity('');
-  addCityToPath(city);
-}, [setCity, addCityToPath, city]);
+  setPath([
+    ...path,
+    city,
+  ]);
+}, [setCity, city, setPath, path]);
 
 const useChangeMode = (
   reset: () => void,
@@ -83,14 +69,14 @@ const useChangeMode = (
 }, [reset, setTab]);
 
 export default function useDeliveryRouteCalculator(calculator: DeliveryRouteCalculator) {
-  const { path, addCityToPath, resetPath } = usePath();
+  const [path, setPath] = useState<string[]>([]);
   const [city, setCity] = useState('');
   const [maxStops, setMaxStops] = useState(-1);
   const [mode, setMode] = useState(0);
   const cities = useCities(calculator);
   const resultMessage = useResultMessage(calculator, path, mode, maxStops);
-  const reset = useRest(setCity, resetPath, setMaxStops);
-  const addCity = useAddCity(setCity, addCityToPath, city);
+  const reset = useRest(setCity, setPath, setMaxStops);
+  const addCity = useAddCity(setCity, city, setPath, path);
   const changeMode = useChangeMode(reset, setMode);
   // we allow multi cities in case 1 only
   const canAddCity = !!city && (mode === 0 || path.length < 2);
