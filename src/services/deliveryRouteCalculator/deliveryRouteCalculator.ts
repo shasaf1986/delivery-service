@@ -34,7 +34,7 @@ export default class DeliveryRouteCalculator {
     return path ? path.totalWeight : null;
   }
 
-  getTowns() {
+  getCities() {
     return this.graph.getVertices();
   }
 }

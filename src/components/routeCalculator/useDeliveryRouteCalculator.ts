@@ -3,7 +3,7 @@ import DeliveryRouteCalculator from '../../services/deliveryRouteCalculator/deli
 
 const useCities = (
   calculator: DeliveryRouteCalculator,
-) => useMemo(() => calculator.getTowns(), [calculator]);
+) => useMemo(() => calculator.getCities(), [calculator]);
 
 const useResultMessage = (
   calculator: DeliveryRouteCalculator,
