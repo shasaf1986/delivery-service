@@ -1,17 +1,43 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Typography, Box, createStyles, makeStyles,
 } from '@material-ui/core';
 import DeliveryRouteCalculator from '../../services/deliveryRouteCalculator/deliveryRouteCalculator';
-import Stepper from '../stepper';
+import Path from '../path';
 import Controls from './controls';
 import VerticalTabs from '../verticalTabs';
 
-interface Props {
-  calculator: DeliveryRouteCalculator;
-}
+const tabs = ['CASE 1', 'CASE 2', 'CASE 3'];
 
-const tabs = ['Case 1', 'Case 2', 'Case 3'];
+const getResultMessage = (
+  path: string[], mode: number, maxStops: number,
+  calculator: DeliveryRouteCalculator,
+) => {
+  if (path.length < 2) {
+    return '';
+  }
+  switch (mode) {
+    case 0: {
+      const cost = calculator.getDeliveryCost(path);
+      return cost !== null ? `The cost is ${cost}` : 'No such route';
+    }
+    case 1: {
+      const [from, to] = path;
+      const count = calculator.getPossibleDeliveryRoutes(from, to, {
+        maxStops: maxStops > 0 ? maxStops : undefined,
+      });
+      return `The possible routes are ${count}`;
+    }
+    case 2: {
+      const [from, to] = path;
+      const cost = calculator.getCheapestDeliveryRoute(from, to);
+      return cost !== null ? `The cost for the cheapest delivery route is ${cost}` : 'No such route';
+    }
+    default: {
+      throw new Error('unknown case');
+    }
+  }
+};
 
 const useStyles = makeStyles(
   createStyles({
@@ -20,105 +46,55 @@ const useStyles = makeStyles(
     },
   }),
 );
-const useCities = (
-  calculator: DeliveryRouteCalculator,
-) => useMemo(() => calculator.getVertices(), [calculator]);
 
-const useResultMessage = (
-  calculator: DeliveryRouteCalculator,
-  path: string[],
-  selectedTab: number,
-  maxStops: number,
-) => useMemo(() => {
-  if (path.length < 2) {
-    return '';
-  }
-  switch (selectedTab) {
-    case 0: {
-      const cost = calculator.getDeliveryCost(path);
-      return cost !== null ? `The cost is ${cost}` : 'No such route';
-    }
-    case 1: {
-      const [from, to] = path;
-      const count = calculator.getPossiblePathsCount(from, to, {
-        maxStops: maxStops > 0 ? maxStops : undefined,
-      });
-      return `The possible routes are ${count}`;
-    }
-    case 2: {
-      const [from, to] = path;
-      const cost = calculator.getShortestPathLength(from, to);
-      return cost !== null ? `The cost for the cheapest delivery route is ${cost}` : 'No such route';
-    }
-    default: {
-      throw new Error('unknown case');
-    }
-  }
-}, [path, selectedTab, maxStops, calculator]);
-
-const useRest = (
-  setCity: (value: string) => void,
-  setPath: (value: string[]) => void,
-  setMaxStops: (value: number) => void,
-) => useCallback(() => {
-  setCity('');
-  setMaxStops(-1);
-  setPath([]);
-}, [setCity, setPath, setMaxStops]);
-
-const useAddCity = (
-  setCity: (value: string) => void,
-  setPath: (value: string[]) => void,
-  path: string[],
-  city: string,
-) => useCallback(() => {
-  setCity('');
-  setPath([
-    ...path,
-    city,
-  ]);
-}, [setCity, setPath, path, city]);
-
-const useChangeTab = (
-  reset: () => void,
-  setSelectedTab: (value: number) => void,
-) => useCallback((tab: number) => {
-  setSelectedTab(tab);
-  reset();
-}, [reset, setSelectedTab]);
-
+interface Props {
+  calculator: DeliveryRouteCalculator;
+}
 const RouteCalculator: React.FC<Props> = ({ calculator }) => {
-  const [path, setPath] = useState<string[]>(() => []);
+  const classes = useStyles();
+  const [path, setPath] = useState<string[]>([]);
   const [city, setCity] = useState('');
   const [maxStops, setMaxStops] = useState(-1);
-  const [selectedTab, setSelectedTab] = useState(0);
-  const cities = useCities(calculator);
-  const resultMessage = useResultMessage(calculator, path, selectedTab, maxStops);
-  const reset = useRest(setCity, setPath, setMaxStops);
-  const addCity = useAddCity(setCity, setPath, path, city);
-  const changeTab = useChangeTab(reset, setSelectedTab);
-  const classes = useStyles();
+  const [mode, setMode] = useState(0);
+  const cities = useMemo(() => calculator.getCities(), [calculator]);
+  const resultMessage = useMemo(() => getResultMessage(path, mode, maxStops, calculator), [
+    path, mode, maxStops, calculator,
+  ]);
+  const reset = () => {
+    setCity('');
+    setMaxStops(-1);
+    setPath([]);
+  };
   // we allow multi cities in case 1 only
-  const canAddCity = !!city && (selectedTab === 0 || path.length < 2);
+  const canAddCity = !!city && (mode === 0 || path.length < 2);
   // show max stops dropdown for case 2 only
-  const showMaxStops = selectedTab === 1;
+  const showMaxStops = mode === 1;
 
   return (
     <Box display="flex">
       <VerticalTabs
         className={classes.tabs}
         tabs={tabs}
-        selectedTab={selectedTab}
-        onChange={changeTab}
+        selectedTab={mode}
+        onChange={(newMode) => {
+          setMode(newMode);
+          reset();
+        }}
       />
       <Box flex="1">
         <Typography gutterBottom variant="h5" component="h3">
-          {tabs[selectedTab]}
+          {tabs[mode]}
         </Typography>
-        <Stepper path={path} />
+        <Path path={path} />
         <Controls
           showMaxStops={showMaxStops}
-          addCity={addCity}
+          addCity={() => {
+            setCity('');
+            setPath([
+              ...path,
+              city,
+            ]);
+          }}
           canAddCity={canAddCity}
           onReset={reset}
           onCityChange={setCity}

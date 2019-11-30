@@ -3,6 +3,10 @@ import {
   Button, Select, createStyles, makeStyles, Grid,
 } from '@material-ui/core';
 
+const maxStopsList: number[] = [];
+for (let i = 0; i < 20; i += 1) {
+  maxStopsList.push(i + 1);
+}
 const useStyles = makeStyles(
   createStyles({
     select: {
@@ -11,10 +15,6 @@ const useStyles = makeStyles(
   }),
 );
 
-const stops: number[] = [];
-for (let i = 0; i < 20; i += 1) {
-  stops.push(i + 1);
-}
 interface Props {
   cities: string[];
   selectedCity: string;
@@ -85,7 +85,14 @@ const Controls: React.FC<Props> = ({
               >
                 <option value={-1}>∞</option>
                 {
-                  stops.map((stop) => <option key={stop} value={stop}>{stop}</option>)
+                  maxStopsList.map((maxstops) => (
+                    <option
+                      key={maxstops}
+                      value={maxstops}
+                    >
+                      {maxstops}
+                    </option>
+                  ))
                 }
               </Select>
             </Grid>

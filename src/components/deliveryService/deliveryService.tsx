@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Typography, Paper } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/styles';
 import SetGraph from '../setGraph';
-import DeliveryRouteCalculator from '../../services/deliveryRouteCalculator/deliveryRouteCalculator';
+import DeliveryRouteCalculator from '../../services/deliveryRouteCalculator';
 import RouteCalculator from '../routeCalculator';
 
 const useStyles = makeStyles(
@@ -26,9 +26,9 @@ const DeliveryService: React.FC = () => {
       </Typography>
       <Paper className={classes.paper}>
         {!isGraphReady && (
-          <SetGraph onSelected={(rawGraph) => {
+          <SetGraph onSubmit={(rawGraph) => {
             try {
-              calculatorRef.current = DeliveryRouteCalculator.fromRawGraph(rawGraph);
+              calculatorRef.current = new DeliveryRouteCalculator(rawGraph);
               setIsGraphReady(true);
             } catch (error) {
               alert('Wrong input');
