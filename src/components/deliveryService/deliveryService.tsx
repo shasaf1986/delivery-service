@@ -26,7 +26,7 @@ const DeliveryService: React.FC = () => {
       </Typography>
       <Paper className={classes.paper}>
         {!isGraphReady && (
-          <SetGraph onSelected={(rawGraph) => {
+          <SetGraph onSubmit={(rawGraph) => {
             try {
               calculatorRef.current = new DeliveryRouteCalculator(rawGraph);
               setIsGraphReady(true);

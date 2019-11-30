@@ -4,11 +4,12 @@ import {
 } from '@material-ui/core';
 
 interface Props {
-  onSelected: (routes: string) => void;
+  onSubmit: (rawGraph: string) => void;
 }
 
-const SetGraph: React.FC<Props> = ({ onSelected }) => {
-  const [value, setValue] = useState('AB1,AC4,AD10,BE3,CD4,CF2,DE1,EB3,EA2,FD1');
+const SetGraph: React.FC<Props> = ({ onSubmit }) => {
+  const [rawGraph, setRawGraph] = useState('AB1,AC4,AD10,BE3,CD4,CF2,DE1,EB3,EA2,FD1');
+
   return (
     <>
       <Typography gutterBottom variant="h5" component="h3">
@@ -17,8 +18,8 @@ const SetGraph: React.FC<Props> = ({ onSelected }) => {
       <Grid container spacing={0}>
         <Grid item xs={12} sm={10} md={6}>
           <TextField
-            onChange={(event) => { setValue(event.currentTarget.value); }}
-            value={value}
+            onChange={(event) => { setRawGraph(event.currentTarget.value); }}
+            value={rawGraph}
             fullWidth
             margin="dense"
             variant="outlined"
@@ -28,7 +29,7 @@ const SetGraph: React.FC<Props> = ({ onSelected }) => {
         <Grid item xs={12}>
           <Button
             onClick={() => {
-              onSelected(value);
+              onSubmit(rawGraph);
             }}
             variant="contained"
             size="large"
