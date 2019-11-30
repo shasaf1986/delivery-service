@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Typography, Paper } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/styles';
 import SetGraph from '../setGraph';
-import DeliveryRouteCalculator from '../../services/deliveryRouteCalculator/deliveryRouteCalculator';
+import DeliveryRouteCalculator from '../../services/deliveryRouteCalculator';
 import RouteCalculator from '../routeCalculator';
 
 const useStyles = makeStyles(

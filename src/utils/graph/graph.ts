@@ -29,7 +29,7 @@ export default class Graph {
     return vertices;
   }
 
-  getPathData(vertices: string[]) {
+  getPath(vertices: string[]) {
     const pathData: PathData = {
       path: [],
       totalWeight: 0,

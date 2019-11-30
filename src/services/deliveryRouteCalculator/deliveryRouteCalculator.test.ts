@@ -2,11 +2,13 @@ import DeliveryRouteCalculator from './deliveryRouteCalculator';
 
 describe('DeliveryRouteCalculator', () => {
   const calculator = new DeliveryRouteCalculator('AB1,AC4,AD10,BE3,CD4,CF2,DE1,EB3,EA2,FD1');
-  describe('getPossibleDeliveryRoutes', () => {
+  describe('getCities', () => {
     test('should return correct towns', () => {
       const cities = calculator.getCities();
       expect(cities.toString()).toBe(['A', 'B', 'C', 'D', 'E', 'F'].toString());
     });
+  });
+  describe('getPossibleDeliveryRoutes', () => {
     test('should return correct number of paths', () => {
       const params = [{
         from: 'E',

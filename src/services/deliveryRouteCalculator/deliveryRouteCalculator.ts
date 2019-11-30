@@ -1,4 +1,4 @@
-import Graph from '../../utils/graph/graph';
+import Graph from '../../utils/graph';
 
 export default class DeliveryRouteCalculator {
   private graph: Graph = new Graph();
@@ -12,7 +12,7 @@ export default class DeliveryRouteCalculator {
   }
 
   getDeliveryCost(route: string[]) {
-    const path = this.graph.getPathData(route);
+    const path = this.graph.getPath(route);
     return path ? path.totalWeight : null;
   }
 
