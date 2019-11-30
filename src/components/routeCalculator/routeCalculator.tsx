@@ -7,7 +7,7 @@ import Path from '../path';
 import Controls from './controls';
 import VerticalTabs from '../verticalTabs';
 
-const tabs = ['Case 1', 'Case 2', 'Case 3'];
+const tabs = ['CASE 1', 'CASE 2', 'CASE 3'];
 
 const getResultMessage = (
   path: string[], mode: number, maxStops: number,
