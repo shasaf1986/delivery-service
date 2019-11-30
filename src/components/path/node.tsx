@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Step as OriginStep, StepLabel, makeStyles, createStyles, Grow,
+  Step, StepLabel, makeStyles, createStyles, Grow,
 } from '@material-ui/core';
 
 const useStyles = makeStyles<undefined, boolean>(
@@ -31,9 +31,9 @@ interface Props {
 const Node: React.FC<Props> = ({ disabled, label, showAnimation = true }) => {
   const classes = useStyles(disabled);
   const step = (
-    <OriginStep className={classes.step}>
+    <Step className={classes.step}>
       <StepLabel><div className={classes.label}>{label}</div></StepLabel>
-    </OriginStep>
+    </Step>
   );
   if (showAnimation) {
     return (
