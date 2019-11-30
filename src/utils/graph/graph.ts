@@ -1,29 +1,29 @@
 import { PathData } from './types';
 
 export default class Graph {
-  private graph: Map<string, Map<string, number>> = new Map();
+  private adjacencyList: Map<string, Map<string, number>> = new Map();
 
   addEdge(from: string, to: string, weight: number) {
     if (typeof weight !== 'number' || Number.isNaN(weight) || weight < 0) {
       throw new Error('weight should be >= 0');
     }
-    let fromAdjacency = this.graph.get(from);
+    let fromAdjacency = this.adjacencyList.get(from);
     if (!fromAdjacency) {
       fromAdjacency = new Map();
-      this.graph.set(from, fromAdjacency);
+      this.adjacencyList.set(from, fromAdjacency);
     }
     if (fromAdjacency.has(to)) {
       throw new Error(`edge from ${from} to ${to} already exist`);
     }
     fromAdjacency.set(to, weight);
-    if (!this.graph.has(to)) {
-      this.graph.set(to, new Map());
+    if (!this.adjacencyList.has(to)) {
+      this.adjacencyList.set(to, new Map());
     }
   }
 
   getVertices() {
     const vertices: string[] = [];
-    this.graph.forEach((_, vertex) => {
+    this.adjacencyList.forEach((_, vertex) => {
       vertices.push(vertex);
     });
     return vertices;
@@ -37,7 +37,7 @@ export default class Graph {
     for (let i = 0; i < vertices.length - 1; i += 1) {
       const from = vertices[i];
       const to = vertices[i + 1];
-      const adjacency = this.graph.get(from);
+      const adjacency = this.adjacencyList.get(from);
       if (!adjacency || !adjacency.has(to)) {
         return null;
       }
@@ -62,7 +62,7 @@ export default class Graph {
     const paths: PathData[] = [];
     // eslint-disable-next-line no-shadow
     const getPossiblePathsRecursive = (from: string, to: string, weight: number) => {
-      const adjacency = this.graph.get(from);
+      const adjacency = this.adjacencyList.get(from);
       const isReachedMaxLength = (tempPath.path.length + 2) > maxLength;
       if (!adjacency || isReachedMaxLength) {
         return paths;
