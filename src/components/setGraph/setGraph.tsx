@@ -18,7 +18,7 @@ const SetGraph: React.FC<Props> = ({ onSubmit }) => {
       <Grid container spacing={0}>
         <Grid item xs={12} sm={10} md={6}>
           <TextField
-            onChange={(event) => { setRawGraph(event.target.value); }}
+            onChange={(event) => { setRawGraph(event.currentTarget.value); }}
             value={rawGraph}
             fullWidth
             margin="dense"
