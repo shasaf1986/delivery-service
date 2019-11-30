@@ -44,7 +44,7 @@ const Controls: React.FC<Props> = ({
             margin="dense"
             onChange={(event) => {
               // @ts-ignore
-              onCityChange(event.target.value);
+              onCityChange(event.currentTarget.value);
             }}
             variant="outlined"
           >
