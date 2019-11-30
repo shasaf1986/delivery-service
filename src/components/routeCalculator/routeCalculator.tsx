@@ -3,14 +3,10 @@ import {
   Typography, Box, createStyles, makeStyles,
 } from '@material-ui/core';
 import DeliveryRouteCalculator from '../../services/deliveryRouteCalculator/deliveryRouteCalculator';
-import Stepper from '../stepper';
+import Path from '../path';
 import Controls from './controls';
 import VerticalTabs from '../verticalTabs';
 import useDeliveryRouteCalculator from './useDeliveryRouteCalculator';
-
-interface Props {
-  calculator: DeliveryRouteCalculator;
-}
 
 const tabs = ['Case 1', 'Case 2', 'Case 3'];
 
@@ -22,6 +18,9 @@ const useStyles = makeStyles(
   }),
 );
 
+interface Props {
+  calculator: DeliveryRouteCalculator;
+}
 const RouteCalculator: React.FC<Props> = ({ calculator }) => {
   const classes = useStyles();
   const {
@@ -41,7 +40,7 @@ const RouteCalculator: React.FC<Props> = ({ calculator }) => {
         <Typography gutterBottom variant="h5" component="h3">
           {tabs[mode]}
         </Typography>
-        <Stepper path={path} />
+        <Path path={path} />
         <Controls
           showMaxStops={showMaxStops}
           addCity={addCity}

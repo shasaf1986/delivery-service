@@ -3,11 +3,6 @@ import {
   Step as OriginStep, StepLabel, makeStyles, createStyles, Grow,
 } from '@material-ui/core';
 
-interface Props {
-  disabled: boolean;
-  label: string;
-}
-
 const useStyles = makeStyles<undefined, boolean>(
   createStyles({
     step: {
@@ -27,16 +22,27 @@ const useStyles = makeStyles<undefined, boolean>(
   }),
 );
 
-const Step: React.FC<Props> = ({ disabled, label }) => {
-  const classes = useStyles(disabled);
-  return (
+interface Props {
+  disabled: boolean;
+  label: string;
+  showAnimation?: boolean;
+}
 
-    <Grow in timeout={500}>
-      <OriginStep className={classes.step}>
-        <StepLabel><div className={classes.label}>{label}</div></StepLabel>
-      </OriginStep>
-    </Grow>
+const Node: React.FC<Props> = ({ disabled, label, showAnimation = true }) => {
+  const classes = useStyles(disabled);
+  const step = (
+    <OriginStep className={classes.step}>
+      <StepLabel><div className={classes.label}>{label}</div></StepLabel>
+    </OriginStep>
   );
+  if (showAnimation) {
+    return (
+      <Grow in timeout={500}>
+        {step}
+      </Grow>
+    );
+  }
+  return step;
 };
 
-export default Step;
+export default Node;
