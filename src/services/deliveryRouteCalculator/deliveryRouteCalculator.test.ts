@@ -4,8 +4,8 @@ describe('DeliveryRouteCalculator', () => {
   const calculator = new DeliveryRouteCalculator('AB1,AC4,AD10,BE3,CD4,CF2,DE1,EB3,EA2,FD1');
   describe('getPossibleDeliveryRoutes', () => {
     test('should return correct towns', () => {
-      const towns = calculator.getTowns();
-      expect(towns.toString()).toBe(['A', 'B', 'C', 'D', 'E', 'F'].toString());
+      const cities = calculator.getCities();
+      expect(cities.toString()).toBe(['A', 'B', 'C', 'D', 'E', 'F'].toString());
     });
     test('should return correct number of paths', () => {
       const params = [{
