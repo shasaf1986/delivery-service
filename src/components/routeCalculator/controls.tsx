@@ -38,6 +38,7 @@ const Controls: React.FC<Props> = ({
       <Grid alignItems="center" spacing={1} container>
         <Grid item>
           <Select
+            data-testid="cities"
             className={classes.select}
             native
             value={selectedCity}
@@ -56,6 +57,7 @@ const Controls: React.FC<Props> = ({
         </Grid>
         <Grid item>
           <Button
+            data-testid="add-city"
             onClick={addCity}
             variant="contained"
             color="primary"
