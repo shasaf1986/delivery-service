@@ -1,11 +1,11 @@
 import DeliveryRouteCalculator from './deliveryRouteCalculator';
 
 describe('DeliveryRouteCalculator', () => {
-  const calculator = new DeliveryRouteCalculator('AB1,AC4,AD10,BE3,CD4,CF2,DE1,EB3,EA2,FD1');
+  const calculator = new DeliveryRouteCalculator('AB1,AC4,AD10,BE3,CD4,CF2,DE1,EB3,EA2,FD1,GA1');
   describe('getCities', () => {
     test('should return correct towns', () => {
       const cities = calculator.getCities();
-      expect(cities.toString()).toBe(['A', 'B', 'C', 'D', 'E', 'F'].toString());
+      expect(cities.toString()).toBe(['A', 'B', 'C', 'D', 'E', 'F', 'G'].toString());
     });
   });
   describe('getPossibleDeliveryRoutes', () => {
@@ -34,8 +34,9 @@ describe('DeliveryRouteCalculator', () => {
     test.each<any>([
       ['E', 'D', 9],
       ['E', 'E', 6],
+      ['A', 'G', null],
     ])('should return correct cost for routes', (from: string, to: string, expected: number) => {
-      const cost = calculator.getCheapestDeliveryRoute(from, to)!;
+      const cost = calculator.getCheapestDeliveryRoute(from, to);
       expect(cost).toBe(expected);
     });
   });
