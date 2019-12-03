@@ -5,7 +5,7 @@ describe('DeliveryRouteCalculator', () => {
   describe('getCities', () => {
     test('should return correct towns', () => {
       const cities = calculator.getCities();
-      expect(cities.toString()).toBe(['A', 'B', 'C', 'D', 'E', 'F', 'G'].toString());
+      expect(cities).toEqual(['A', 'B', 'C', 'D', 'E', 'F', 'G']);
     });
   });
   describe('getPossibleDeliveryRoutes', () => {
