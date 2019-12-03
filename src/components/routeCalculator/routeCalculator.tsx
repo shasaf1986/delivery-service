@@ -103,7 +103,7 @@ const RouteCalculator: React.FC<Props> = ({ calculator }) => {
           selectedMaxStops={maxStops}
           onMaxStopsChange={setMaxStops}
         />
-        <p>{resultMessage}</p>
+        <p data-testid="result-message">{resultMessage}</p>
       </Box>
     </Box>
   );
