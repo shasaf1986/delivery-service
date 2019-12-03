@@ -42,9 +42,9 @@ describe('RouteCalculator', () => {
     jest.clearAllMocks();
   });
   test.each<any>([
-    [['A', 'B', 'E'], 4],
-    [['B', 'A'], null],
-  ])('should show correct result message for case 1', (path: string[], expected: number | null) => {
+    [4, ['A', 'B', 'E']],
+    [null, ['B', 'A']],
+  ])('the delivery cost should be %s when the path is %j', (expected: number | null, path: string[]) => {
     const spy = jest.spyOn(calculator, 'getDeliveryCost');
     const renderResult = render(<RouteCalculator calculator={calculator} />);
     const { getByTestId } = renderResult;
@@ -54,9 +54,9 @@ describe('RouteCalculator', () => {
     expect(result).toBe(expected !== null ? `The cost is ${expected}` : 'No such route');
   });
   test.each<any>([
-    [['E', 'D'], 9],
-    [['A', 'G'], null],
-  ])('should show correct result message for case 3', (path: string[], expected: number | null) => {
+    [9, ['E', 'D']],
+    [null, ['A', 'G']],
+  ])('the cheapest delivery route should be %s when the path is %j', (expected: number | null, path: string[]) => {
     const [from, to] = path;
     const spy = jest.spyOn(calculator, 'getCheapestDeliveryRoute');
     const renderResult = render(<RouteCalculator calculator={calculator} />);
