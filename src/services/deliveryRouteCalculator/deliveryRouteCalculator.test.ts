@@ -5,14 +5,14 @@ describe('DeliveryRouteCalculator', () => {
   describe('getCities', () => {
     test('should return correct towns', () => {
       const cities = calculator.getCities();
-      expect(cities.toString()).toBe(['A', 'B', 'C', 'D', 'E', 'F', 'G'].toString());
+      expect(cities).toEqual(['A', 'B', 'C', 'D', 'E', 'F', 'G']);
     });
   });
   describe('getPossibleDeliveryRoutes', () => {
     test.each<any>([
-      ['E', 'D', 4, 4],
-      ['E', 'E', Infinity, 5],
-    ])('should return number of paths', (from: string, to: string, maxStops: number, expected: number) => {
+      [4, 'E', 'D', 4],
+      [5, 'E', 'E', Infinity],
+    ])('should return %s when from is %s and to is %s and max stops are %s', (expected: number, from: string, to: string, maxStops: number) => {
       const count = calculator.getPossibleDeliveryRoutes(from, to, {
         maxStops,
       });
@@ -21,21 +21,21 @@ describe('DeliveryRouteCalculator', () => {
   });
   describe('getDeliveryCost', () => {
     test.each<any>([
-      [['A', 'B', 'E'], 4],
-      [['A', 'D'], 10],
-      [['E', 'A', 'C', 'F'], 8],
-      [['A', 'D', 'F'], null],
-    ])('should return cost of the path', (path: string[], expected: number | null) => {
+      [4, ['A', 'B', 'E']],
+      [10, ['A', 'D']],
+      [8, ['E', 'A', 'C', 'F']],
+      [null, ['A', 'D', 'F']],
+    ])('should return %s when the path is %j', (expected: number | null, path: string[]) => {
       const actualCost = calculator.getDeliveryCost(path);
       expect(actualCost).toBe(expected);
     });
   });
   describe('getCheapestDeliveryRoute', () => {
     test.each<any>([
-      ['E', 'D', 9],
-      ['E', 'E', 6],
-      ['A', 'G', null],
-    ])('should return the cheapest delivery route for the path', (from: string, to: string, expected: number) => {
+      [9, 'E', 'D'],
+      [6, 'E', 'E'],
+      [null, 'A', 'G'],
+    ])('should return %s when from is %s and to is %s', (expected: number, from: string, to: string) => {
       const cost = calculator.getCheapestDeliveryRoute(from, to);
       expect(cost).toBe(expected);
     });
